@@ -12,3 +12,10 @@ def test_normalize_and_metric():
     assert normalize(' "Comedy." ') == "comedy"
     assert genre_accuracy(item, "Comedy.") == 1.0
     assert genre_accuracy(item, "It is a comedy") == 0.0
+
+
+def test_explain_names_the_expected_label():
+    from classifier import explain
+
+    assert explain({"genre": "comedy"}, "Comedy") == "correct: 'comedy'"
+    assert "expected exactly 'comedy'" in explain({"genre": "comedy"}, "It is sports.")

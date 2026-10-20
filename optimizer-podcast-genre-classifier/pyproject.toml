@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "Tune a podcast genre classifier prompt over 30 invented episode blurbs, gpt-4o-mini only"
 requires-python = ">=3.12"
 dependencies = [
+    "opik==2.2.105",
+    "opik-optimizer==3.2.0",  # requires opik>=1.9.7; pinned together with opik
     "openai>=1.60",
     "python-dotenv>=1.0",
 ]
