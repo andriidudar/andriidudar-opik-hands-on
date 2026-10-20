@@ -1,5 +1,7 @@
 import argparse
 
+import opik
+
 from .data import load_artefacts
 from .generate import write_label_local
 
@@ -17,3 +19,6 @@ def main(argv: list[str] | None = None) -> None:
             if args.accession in (None, artefact["accession"]):
                 print(f"--- {artefact['title']} ---")
                 print(write_label_local(artefact, args.version), "\n")
+
+    # Traces are sent in the background; flush so none are lost at exit.
+    opik.flush_tracker()
