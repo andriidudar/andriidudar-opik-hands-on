@@ -1,0 +1,17 @@
+[project]
+name = "openai-vision-trading-cards"
+version = "0.1.0"
+description = "gpt-4o-mini reads stats off generated trading-card images; the card images ride along on Opik traces and an Opik test suite reports honest failures"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=3.24.0",
+    "pillow>=12.3.0",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
