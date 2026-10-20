@@ -1,0 +1,31 @@
+{
+  "name": "vercel-ai-sveltekit-garden-chat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Streaming garden-care chat in SvelteKit on the Vercel AI SDK",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^4.0.98",
+    "@ai-sdk/svelte": "^5.0.146",
+    "ai": "^7.0.146",
+    "dotenv": "^18.0.8"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^7.0.1",
+    "@sveltejs/kit": "^2.70.3",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@types/node": "^24.0.0",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.7",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.0",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}
