@@ -29,3 +29,8 @@ for (const [i, request] of REQUESTS.entries()) {
   const result = await agent.generate(request, { maxSteps: 6 });
   console.log(`Agent:    ${result.text}`);
 }
+
+// shutdown() flushes the OTel exporter; without it the last spans can be lost
+// when the process exits and the final trace never reaches Opik.
+await mastra.shutdown();
+console.log('\nDone. Open the "mastra-banking-agent" project in Opik to see the traces.');

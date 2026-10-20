@@ -4,7 +4,9 @@
   "private": true,
   "description": "A Mastra personal-banking assistant for a fictional bank, traced to a local Opik.",
   "type": "module",
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "demo": "tsx src/demo.ts",
     "typecheck": "tsc --noEmit",
@@ -12,6 +14,9 @@
   },
   "dependencies": {
     "@mastra/core": "1.78.0",
+    "@mastra/observability": "^1.20.1",
+    "@mastra/otel-exporter": "^1.4.8",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
     "dotenv": "^17.2.0",
     "zod": "^4.0.0"
   },
