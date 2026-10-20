@@ -1,8 +1,14 @@
 """Offline tests: no provider keys, no Temporal server, Opik tracking disabled."""
-import pytest
+import dataclasses
+import json
+from types import SimpleNamespace
 
+import pytest
+from temporalio.testing import ActivityEnvironment
+
+from screening import activities
 from screening.logic import check_eligibility, decide, pick_screener
-from screening.models import Submission
+from screening.models import Screener, Submission, SynopsisScreen
 from screening.starter import load_submissions
 
 
@@ -30,3 +36,32 @@ def test_decide(score, expected):
 def test_pick_screener_matches_specialty_with_fallback():
     assert pick_screener("Documentary").name == "Jonas Eriksen"
     assert pick_screener("polka opera").name == "Priya Raman"
+
+
+async def test_traced_activity_runs_with_tracking_disabled():
+    # @track-decorated functions behave like plain functions when OPIK_TRACK_DISABLE=true.
+    env = ActivityEnvironment()
+    result = await env.run(activities.check_eligibility, sub(), {})
+    assert result.eligible
+
+
+async def test_flaky_activity_fails_first_attempt_then_succeeds():
+    env = ActivityEnvironment()
+    env.info = dataclasses.replace(env.info, attempt=1)
+    with pytest.raises(ConnectionError):
+        await env.run(activities.assign_screener, "drama", {})
+    env.info = dataclasses.replace(env.info, attempt=2)
+    assert await env.run(activities.assign_screener, "drama", {}) == Screener("Priya Raman", "drama")
+
+
+async def test_synopsis_activity_parses_stubbed_model_reply(monkeypatch):
+    reply = json.dumps({"genre": "drama", "themes": ["grief"], "content_flags": [],
+                        "fit_score": 4, "pitch": "A keeper answers the sea."})
+
+    async def create(**kwargs):
+        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=reply))])
+
+    stub = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    monkeypatch.setattr(activities, "get_client", lambda: stub)
+    out = await ActivityEnvironment().run(activities.screen_synopsis, sub(), {})
+    assert out == SynopsisScreen("drama", ["grief"], [], 4, "A keeper answers the sea.")

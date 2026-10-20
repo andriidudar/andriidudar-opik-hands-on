@@ -21,6 +21,9 @@ def get_client() -> AsyncOpenAI:
     return track_openai(AsyncOpenAI())
 
 
+# NOTE: every @track function below declares opik_distributed_trace_headers itself. With
+# tracking enabled @track pops that kwarg; with OPIK_TRACK_DISABLE=true it forwards it to
+# the function, which would raise TypeError without the parameter.
 def _headers(trace_headers: dict[str, str]) -> dict | None:
     # Opik's distributed-tracing headers (trace id + parent span id) arrive as plain
     # activity input. Handing them to a @track function makes its span a child of the
@@ -37,7 +40,7 @@ def _tag_attempt() -> None:
 
 
 @opik.track(name="check_eligibility", type="tool")
-async def _check_eligibility(sub: Submission) -> Eligibility:
+async def _check_eligibility(sub: Submission, opik_distributed_trace_headers: dict | None = None) -> Eligibility:
     _tag_attempt()
     return run_eligibility_rules(sub)
 
@@ -48,7 +51,7 @@ async def check_eligibility(sub: Submission, trace_headers: dict[str, str]) -> E
 
 
 @opik.track(name="screen_synopsis", type="general")
-async def _screen_synopsis(sub: Submission) -> SynopsisScreen:
+async def _screen_synopsis(sub: Submission, opik_distributed_trace_headers: dict | None = None) -> SynopsisScreen:
     _tag_attempt()
     resp = await get_client().chat.completions.create(
         model=MODEL,
@@ -82,7 +85,7 @@ async def screen_synopsis(sub: Submission, trace_headers: dict[str, str]) -> Syn
 
 
 @opik.track(name="assign_screener", type="tool")
-async def _assign_screener(genre: str) -> Screener:
+async def _assign_screener(genre: str, opik_distributed_trace_headers: dict | None = None) -> Screener:
     _tag_attempt()
     # Deliberately flaky: the roster service "times out" on the first attempt of
     # every run, so Temporal's retry policy has something to retry. @track records the
@@ -98,7 +101,9 @@ async def assign_screener(genre: str, trace_headers: dict[str, str]) -> Screener
 
 
 @opik.track(name="write_decision_letter", type="general")
-async def _write_decision_letter(sub: Submission, screen: SynopsisScreen, screener: Screener | None) -> str:
+async def _write_decision_letter(
+    sub: Submission, screen: SynopsisScreen, screener: Screener | None, opik_distributed_trace_headers: dict | None = None
+) -> str:
     _tag_attempt()
     decision = decide(screen.fit_score)
     resp = await get_client().chat.completions.create(

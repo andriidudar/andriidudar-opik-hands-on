@@ -57,6 +57,8 @@ You need `uv`, the `temporal` CLI (the demo starts its own in-memory dev server 
 
 **Extra traces appear in the project after running the tests.** Calling the activities in a test with tracking on sends real traces to Opik (we got four stray one-span traces next to the demo's three). Set `OPIK_TRACK_DISABLE=true` for tests.
 
+**`TypeError: _check_eligibility() got an unexpected keyword argument 'opik_distributed_trace_headers'` in tests.** With tracking enabled `@track` strips that keyword before calling your function; with `OPIK_TRACK_DISABLE=true` it passes it straight through. Declare it on every function that receives headers: `async def _assign_screener(genre: str, opik_distributed_trace_headers: dict | None = None)`. The offline tests now call the traced activities with tracking disabled to guard this.
+
 ## How it's put together
 
 - `screening/workflows.py` the deterministic workflow; forwards trace headers.
