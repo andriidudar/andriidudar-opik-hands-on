@@ -1,0 +1,20 @@
+--- a/cache/store.py
++++ b/cache/store.py
+@@ -3,11 +3,16 @@ import time
+-_CACHE = {}
++_CACHE: dict[str, tuple[float, object]] = {}
++TTL_SECONDS = 60
+ 
+ def get(key):
+-    return _CACHE.get(key)
++    hit = _CACHE.get(key)
++    if hit is None:
++        return None
++    stored_at, value = hit
++    if time.time() - stored_at > TTL_SECONDS:
++        return None
++    return value
+ 
+ def put(key, value):
+-    _CACHE[key] = value
++    _CACHE[key] = (time.time(), value)

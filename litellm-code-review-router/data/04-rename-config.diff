@@ -1,0 +1,14 @@
+--- a/app/settings.py
++++ b/app/settings.py
+@@ -1,8 +1,8 @@
+-TIMEOUT = 30
+-MAX_ROWS = 500
++REQUEST_TIMEOUT_S = 30
++MAX_ROWS_PER_PAGE = 500
+--- a/app/views.py
++++ b/app/views.py
+@@ -14,3 +14,3 @@
+-    rows = fetch(limit=settings.MAX_ROWS)
+-    rows = fetch(limit=settings.MAX_ROWS, timeout=settings.TIMEOUT)
++    rows = fetch(limit=settings.MAX_ROWS_PER_PAGE)
++    rows = fetch(limit=settings.MAX_ROWS_PER_PAGE, timeout=settings.REQUEST_TIMEOUT_S)

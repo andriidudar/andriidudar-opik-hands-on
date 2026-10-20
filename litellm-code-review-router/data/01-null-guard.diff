@@ -1,0 +1,9 @@
+--- a/inventory/lookup.py
++++ b/inventory/lookup.py
+@@ -12,7 +12,10 @@ def find_shelf(catalog, sku):
+-    shelf = catalog.get(sku)
+-    return shelf.location
++    shelf = catalog.get(sku)
++    if shelf is None:
++        return "UNASSIGNED"
++    return shelf.location

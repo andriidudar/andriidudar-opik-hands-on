@@ -1,0 +1,13 @@
+--- a/sync/uploader.py
++++ b/sync/uploader.py
+@@ -30,6 +30,14 @@ def push_batch(client, batch):
+-    return client.post("/batches", json=batch)
++    attempt = 0
++    while True:
++        try:
++            return client.post("/batches", json=batch)
++        except ConnectionError:
++            attempt += 1
++            if attempt > 5:
++                raise
++            time.sleep(2 ** attempt)

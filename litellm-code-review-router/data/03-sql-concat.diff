@@ -1,0 +1,7 @@
+--- a/reports/orders.py
++++ b/reports/orders.py
+@@ -7,5 +7,6 @@ def orders_for_customer(db, name):
+-    query = "SELECT * FROM orders WHERE customer = ?"
+-    return db.execute(query, (name,)).fetchall()
++    query = "SELECT * FROM orders WHERE customer = '" + name + "'"
++    return db.execute(query).fetchall()
