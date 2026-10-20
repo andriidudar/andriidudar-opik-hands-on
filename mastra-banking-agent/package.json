@@ -1,0 +1,24 @@
+{
+  "name": "mastra-banking-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Mastra personal-banking assistant for a fictional bank, traced to a local Opik.",
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "demo": "tsx src/demo.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mastra/core": "1.78.0",
+    "dotenv": "^17.2.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}

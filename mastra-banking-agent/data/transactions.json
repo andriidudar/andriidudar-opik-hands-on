@@ -1,0 +1,16 @@
+[
+  { "tx_id": "T-001", "account_id": "CHK-2210", "date": "2026-09-28", "merchant": "Harbor Grocers", "amount": -84.12, "category": "groceries" },
+  { "tx_id": "T-002", "account_id": "CHK-2210", "date": "2026-09-29", "merchant": "Northwind Payroll", "amount": 3120.0, "category": "income" },
+  { "tx_id": "T-003", "account_id": "CHK-2210", "date": "2026-09-30", "merchant": "Lumen Power & Light", "amount": -96.4, "category": "utilities" },
+  { "tx_id": "T-004", "account_id": "CHK-2210", "date": "2026-10-02", "merchant": "Cedar Coffee Co", "amount": -6.75, "category": "dining" },
+  { "tx_id": "T-005", "account_id": "CHK-2210", "date": "2026-10-03", "merchant": "Quickride Rideshare", "amount": -23.9, "category": "transport" },
+  { "tx_id": "T-006", "account_id": "CHK-2210", "date": "2026-10-04", "merchant": "Streamly Subscription", "amount": -15.99, "category": "entertainment" },
+  { "tx_id": "T-007", "account_id": "CHK-2210", "date": "2026-10-05", "merchant": "Zephyr Online Mart", "amount": -412.0, "category": "shopping" },
+  { "tx_id": "T-008", "account_id": "CHK-2210", "date": "2026-10-06", "merchant": "Harbor Grocers", "amount": -61.48, "category": "groceries" },
+  { "tx_id": "T-101", "account_id": "CHK-9054", "date": "2026-10-01", "merchant": "Cedar Coffee Co", "amount": -5.5, "category": "dining" },
+  { "tx_id": "T-102", "account_id": "CHK-9054", "date": "2026-10-03", "merchant": "Zephyr Online Mart", "amount": -129.99, "category": "shopping" },
+  { "tx_id": "T-103", "account_id": "CHK-9054", "date": "2026-10-04", "merchant": "Unknown Merchant 88213", "amount": -249.0, "category": "other" },
+  { "tx_id": "T-104", "account_id": "CHK-9054", "date": "2026-10-05", "merchant": "Unknown Merchant 88213", "amount": -249.0, "category": "other" },
+  { "tx_id": "T-201", "account_id": "SAV-7731", "date": "2026-09-30", "merchant": "Interest Credit", "amount": 18.4, "category": "income" },
+  { "tx_id": "T-202", "account_id": "SAV-7731", "date": "2026-10-01", "merchant": "Transfer from CHK-2210", "amount": 500.0, "category": "transfer" }
+]

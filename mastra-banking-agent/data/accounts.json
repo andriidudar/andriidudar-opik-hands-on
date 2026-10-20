@@ -1,0 +1,9 @@
+{
+  "customer": "Priya Raman",
+  "bank": "Fernbank Demo Bank (fictional)",
+  "accounts": [
+    { "account_id": "CHK-2210", "type": "checking", "currency": "USD", "balance": 2481.37, "card_id": "CARD-4417", "card_status": "active" },
+    { "account_id": "SAV-7731", "type": "savings", "currency": "USD", "balance": 12950.0, "card_id": null, "card_status": null },
+    { "account_id": "CHK-9054", "type": "checking", "currency": "USD", "balance": 312.8, "card_id": "CARD-5523", "card_status": "active" }
+  ]
+}
