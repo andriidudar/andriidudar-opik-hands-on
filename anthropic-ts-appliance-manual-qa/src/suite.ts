@@ -7,6 +7,8 @@ export const SUITE_NAME = "appliance-manual-citations";
 // The quality bar every answer must clear, in plain English. An LLM judge checks each sentence
 // against each answer; an item passes only if every assertion holds.
 export const GLOBAL_ASSERTIONS = [
+  // Without this one, an answer with no quotes at all passes the verbatim check vacuously.
+  "Unless the response says the manual does not cover the question, it contains at least one excerpt wrapped in <quote> tags",
   "Every excerpt wrapped in <quote> tags in the response appears verbatim, character for character, in the manual provided as context",
   "The quoted excerpts genuinely support the factual claims made in the answer",
   "The response answers the question that was asked, and does not state any specification (number, time, temperature or rule) that is not in the manual",
@@ -33,6 +35,13 @@ export async function setUpSuite(client: Opik, projectName: string): Promise<Tes
     name: SUITE_NAME,
     projectName,
     description: "Owner's-manual answers must quote the manual verbatim",
+    globalAssertions: GLOBAL_ASSERTIONS,
+    globalExecutionPolicy: { runsPerItem: 3, passThreshold: 2 },
+  });
+  // getOrCreateTestSuite returns an existing suite as-is and ignores the options passed above, so
+  // an edited assertion would silently never run. updateTestSettings pushes the current ones to
+  // the suite (it creates a new suite version) before every run.
+  await suite.updateTestSettings({
     globalAssertions: GLOBAL_ASSERTIONS,
     globalExecutionPolicy: { runsPerItem: 3, passThreshold: 2 },
   });
