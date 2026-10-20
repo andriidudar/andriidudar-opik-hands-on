@@ -12,7 +12,8 @@ from .tracing import PROJECT_NAME
 # Rules every extraction must satisfy; an LLM judge scores each one per item.
 GLOBAL_ASSERTIONS = [
     "No field is invented: every non-null value is stated in, or directly derivable from, the email",
-    "A field the email does not mention (end_time, timezone, location, meeting_link) is null, not a plausible default",
+    "Any of end_time, timezone, location or meeting_link that the email never states is null, not a plausible default "
+    "(fields the email does state may of course be filled in)",
     "attendees only lists people named in the email, never generic roles or guesses",
     "ungrounded_fields is empty",
 ]
@@ -44,6 +45,9 @@ def run_suite(client: opik.Opik) -> Any:
         project_name=PROJECT_NAME,
         global_assertions=GLOBAL_ASSERTIONS,
     )
+    # get_or_create keeps the assertions the suite was first created with, so edits to
+    # GLOBAL_ASSERTIONS would silently not apply; this pushes them as a new suite version.
+    suite.update_test_settings(global_assertions=GLOBAL_ASSERTIONS)
     suite.insert(build_items())
     # run_tests extracts each email, has an LLM judge check every assertion, and records the
     # result as an experiment: one pass/fail row per email, with the judge's reasons.

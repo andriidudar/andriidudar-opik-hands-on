@@ -3,6 +3,7 @@
 import os
 
 import logfire
+from opik.integrations.otel import OpikSpanProcessor
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
@@ -25,14 +26,17 @@ def setup_tracing() -> None:
         send_to_logfire=False,
         console=False,  # keep the terminal for results; spans go to Opik
         service_name=PROJECT_NAME,
-        additional_span_processors=[BatchSpanProcessor(exporter)],
+        # OpikSpanProcessor stamps the active Opik trace id onto spans started inside it, so
+        # the agent spans nest inside run_tests' evaluation_task trace instead of becoming
+        # separate root traces (without it: 12 traces for 6 emails).
+        additional_span_processors=[OpikSpanProcessor(), BatchSpanProcessor(exporter)],
     )
-    # Makes every Agent run emit gen_ai spans: invoke_agent (the trace root) and one
+    # Makes every Agent run emit gen_ai spans: invoke_agent (a trace root when run standalone) and one
     # llm span per model call, with token usage, which Opik renders as a trace tree.
     logfire.instrument_pydantic_ai()
 
 
 def flush_tracing() -> None:
-    # BatchSpanProcessor buffers spans; without this flush a short CLI run can exit
-    # before they are sent and the project stays empty.
+    # BatchSpanProcessor buffers spans; flushing here sends them to Opik now rather than
+    # relying on interpreter shutdown, so the traces exist before the CLI prints its summary.
     logfire.force_flush()
