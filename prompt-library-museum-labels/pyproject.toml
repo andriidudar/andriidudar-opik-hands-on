@@ -1,0 +1,15 @@
+[project]
+name = "prompt-library-museum-labels"
+version = "0.1.0"
+description = "Museum wall-label writer with a versioned prompt and a test suite per version"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.0",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
