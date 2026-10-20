@@ -10,7 +10,8 @@
   "scripts": {
     "demo": "tsx src/demo.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check": "tsx src/check.ts"
   },
   "dependencies": {
     "@mastra/core": "1.78.0",
