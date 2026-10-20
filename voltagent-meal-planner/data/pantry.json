@@ -1,0 +1,14 @@
+[
+  { "item": "spaghetti", "quantity": 500, "unit": "g" },
+  { "item": "canned tomatoes", "quantity": 2, "unit": "can" },
+  { "item": "garlic", "quantity": 6, "unit": "clove" },
+  { "item": "olive oil", "quantity": 300, "unit": "ml" },
+  { "item": "eggs", "quantity": 4, "unit": "piece" },
+  { "item": "rice", "quantity": 800, "unit": "g" },
+  { "item": "onion", "quantity": 2, "unit": "piece" },
+  { "item": "chickpeas", "quantity": 1, "unit": "can" },
+  { "item": "coconut milk", "quantity": 1, "unit": "can" },
+  { "item": "curry paste", "quantity": 1, "unit": "jar" },
+  { "item": "parmesan", "quantity": 60, "unit": "g" },
+  { "item": "lentils", "quantity": 400, "unit": "g" }
+]

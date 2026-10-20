@@ -1,0 +1,44 @@
+[
+  { "id": "R1", "name": "Pomodoro Spaghetti", "tags": ["vegetarian", "quick"], "minutes": 20,
+    "ingredients": [
+      { "item": "spaghetti", "quantity": 200, "unit": "g" },
+      { "item": "canned tomatoes", "quantity": 1, "unit": "can" },
+      { "item": "garlic", "quantity": 2, "unit": "clove" },
+      { "item": "olive oil", "quantity": 30, "unit": "ml" },
+      { "item": "basil", "quantity": 1, "unit": "bunch" } ] },
+  { "id": "R2", "name": "Chickpea Coconut Curry", "tags": ["vegan", "weeknight"], "minutes": 30,
+    "ingredients": [
+      { "item": "chickpeas", "quantity": 1, "unit": "can" },
+      { "item": "coconut milk", "quantity": 1, "unit": "can" },
+      { "item": "curry paste", "quantity": 1, "unit": "jar" },
+      { "item": "onion", "quantity": 1, "unit": "piece" },
+      { "item": "rice", "quantity": 150, "unit": "g" },
+      { "item": "spinach", "quantity": 200, "unit": "g" } ] },
+  { "id": "R3", "name": "Egg Fried Rice", "tags": ["vegetarian", "quick"], "minutes": 15,
+    "ingredients": [
+      { "item": "rice", "quantity": 200, "unit": "g" },
+      { "item": "eggs", "quantity": 3, "unit": "piece" },
+      { "item": "onion", "quantity": 1, "unit": "piece" },
+      { "item": "soy sauce", "quantity": 30, "unit": "ml" },
+      { "item": "spring onion", "quantity": 1, "unit": "bunch" } ] },
+  { "id": "R4", "name": "Red Lentil Soup", "tags": ["vegan", "budget"], "minutes": 35,
+    "ingredients": [
+      { "item": "lentils", "quantity": 200, "unit": "g" },
+      { "item": "onion", "quantity": 1, "unit": "piece" },
+      { "item": "garlic", "quantity": 3, "unit": "clove" },
+      { "item": "canned tomatoes", "quantity": 1, "unit": "can" },
+      { "item": "cumin", "quantity": 1, "unit": "jar" } ] },
+  { "id": "R5", "name": "Spaghetti Carbonara", "tags": ["classic"], "minutes": 25,
+    "ingredients": [
+      { "item": "spaghetti", "quantity": 200, "unit": "g" },
+      { "item": "eggs", "quantity": 3, "unit": "piece" },
+      { "item": "parmesan", "quantity": 50, "unit": "g" },
+      { "item": "guanciale", "quantity": 120, "unit": "g" } ] },
+  { "id": "R6", "name": "Garlic Lentil Salad", "tags": ["vegan", "budget", "quick"], "minutes": 20,
+    "ingredients": [
+      { "item": "lentils", "quantity": 150, "unit": "g" },
+      { "item": "garlic", "quantity": 1, "unit": "clove" },
+      { "item": "olive oil", "quantity": 20, "unit": "ml" },
+      { "item": "lemon", "quantity": 1, "unit": "piece" },
+      { "item": "parsley", "quantity": 1, "unit": "bunch" } ] }
+]
