@@ -1,0 +1,30 @@
+{
+  "shop": "Spoke & Sprocket Cycle Works",
+  "labor_rate_per_hour": 60,
+  "services": {
+    "puncture repair": {"hours": 0.5, "parts": []},
+    "brake bleed": {"hours": 1.0, "parts": ["dot-fluid"]},
+    "brake pad swap": {"hours": 0.5, "parts": ["brake-pads-disc"]},
+    "chain replacement": {"hours": 0.5, "parts": ["chain-11s"]},
+    "gear tune-up": {"hours": 0.75, "parts": []},
+    "wheel true": {"hours": 0.5, "parts": []},
+    "full service": {"hours": 3.0, "parts": ["chain-11s", "cable-set"]}
+  },
+  "parts": {
+    "chain-11s": {"name": "11-speed chain", "price": 32.0, "stock": 6},
+    "brake-pads-disc": {"name": "Disc brake pads (pair)", "price": 24.0, "stock": 0},
+    "dot-fluid": {"name": "DOT 5.1 brake fluid 100ml", "price": 9.5, "stock": 12},
+    "cable-set": {"name": "Gear cable and housing set", "price": 18.0, "stock": 4},
+    "tube-700x28": {"name": "Inner tube 700x28c", "price": 8.0, "stock": 25},
+    "tube-29x2.2": {"name": "Inner tube 29x2.2", "price": 10.0, "stock": 9},
+    "cassette-11-34": {"name": "11-34T cassette", "price": 58.0, "stock": 2}
+  },
+  "bike_surcharge": {"road": 0, "mountain": 10, "ebike": 40},
+  "slots": {
+    "2026-11-02": ["09:00", "13:00"],
+    "2026-11-03": [],
+    "2026-11-04": ["10:00", "11:30", "15:00"],
+    "2026-11-05": ["09:30"]
+  },
+  "policies": "Repairs are done in the order booked. Quotes are valid for 7 days. Slots are 60-90 minutes; a full service needs a whole-day drop-off."
+}

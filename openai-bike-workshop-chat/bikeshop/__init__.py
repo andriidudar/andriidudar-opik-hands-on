@@ -1,0 +1,1 @@
+"""Bike workshop chat assistant."""
