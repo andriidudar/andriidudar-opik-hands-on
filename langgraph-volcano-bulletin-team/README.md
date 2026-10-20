@@ -24,16 +24,16 @@ Open the `langgraph-volcano-bulletin-team` project, Traces tab. One run gives ex
 
 - The agent graph panel on the trace page draws planner, researcher, writer and the researcher-to-researcher loop edge. It appears because the tracer is given the compiled graph.
 - Each `researcher` span holds a `search_notes` tool span (retrieval, with the question as input and the matched sections as output) and a `ChatOpenAI` llm span with tokens and cost.
-- The verified run has 22 spans: 6 node spans (planner, researcher x4, writer) plus their children, 6 `ChatOpenAI` llm spans and 4 `search_notes` tool spans. It used 3,812 tokens for about $0.0011 on gpt-4o-mini. The researcher is the biggest line in total (four passes, 2,273 tokens); the writer is the biggest single call (1,290 tokens).
+- The verified run has 22 spans: 6 node spans (planner, researcher x4, writer) plus their children, 6 `ChatOpenAI` llm spans and 4 `search_notes` tool spans. It used 3,796 tokens for about $0.0011 on gpt-4o-mini. The researcher is the biggest line in total (four passes, 2,261 tokens); the writer is the biggest single call (1,286 tokens).
 - The trace metadata carries a `_opik_graph_definition` entry: that is the graph layout the agent-graph panel reads.
 - The terminal prints the same split, summed from the llm spans:
 
 ```
 agent        passes   tokens   cost (USD)
 planner           1      249     0.000072
-researcher        4     2273     0.000604
-writer            1     1290     0.000406
-total             6     3812     0.001082
+researcher        4     2261     0.000597
+writer            1     1286     0.000409
+total             6     3796     0.001077
 ```
 
 ## Run it yourself
