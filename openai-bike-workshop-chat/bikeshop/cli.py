@@ -3,6 +3,8 @@
 import argparse
 import uuid
 
+import opik
+
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv(usecwd=True))
@@ -49,6 +51,9 @@ def main() -> None:
         run_interactive() if args.interactive else run_demo()
     except KeyboardInterrupt:
         print("\nBye!")
+    finally:
+        # Traces are sent in the background; flush so none are lost on exit.
+        opik.flush_tracker()
 
 
 if __name__ == "__main__":

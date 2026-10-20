@@ -5,9 +5,14 @@ Each tool returns plain dicts so results can be fed straight back to the model.
 
 import json
 
+import opik
+
 from bikeshop.data import load_shop
 
 
+# type="tool" makes this a tool span, nested under the turn that called it, with
+# its arguments as input and the returned dict as output.
+@opik.track(type="tool")
 def get_repair_quote(services: list[str], bike_type: str = "road") -> dict:
     shop = load_shop()
     items, unknown, parts_missing = [], [], []
@@ -39,6 +44,9 @@ def get_repair_quote(services: list[str], bike_type: str = "road") -> dict:
     }
 
 
+# type="tool" makes this a tool span, nested under the turn that called it, with
+# its arguments as input and the returned dict as output.
+@opik.track(type="tool")
 def check_service_slots(date: str | None = None) -> dict:
     slots = load_shop()["slots"]
     if date:
@@ -46,6 +54,9 @@ def check_service_slots(date: str | None = None) -> dict:
     return {"open_slots": {d: s for d, s in slots.items() if s}}
 
 
+# type="tool" makes this a tool span, nested under the turn that called it, with
+# its arguments as input and the returned dict as output.
+@opik.track(type="tool")
 def lookup_part(query: str) -> dict:
     words = query.lower().split()
     hits = [

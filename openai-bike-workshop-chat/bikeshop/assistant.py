@@ -1,6 +1,9 @@
 """The chat assistant: a tool-calling loop on the plain OpenAI SDK."""
 
+import opik
 from openai import OpenAI
+from opik import opik_context
+from opik.integrations.openai import track_openai
 
 from bikeshop.data import load_shop
 from bikeshop.tools import SCHEMAS, run_tool
@@ -25,10 +28,18 @@ class Assistant:
 
     def __init__(self, conversation_id: str, client: OpenAI | None = None):
         self.conversation_id = conversation_id
-        self.client = client or OpenAI()
+        # track_openai wraps the client: every completion becomes an llm span with
+        # token usage and cost, nested under the current turn's trace.
+        self.client = client or track_openai(OpenAI())
         self.messages = [{"role": "system", "content": system_prompt()}]
 
+    # One call to answer() is one trace named "chat-turn": the llm and tool spans
+    # of this turn hang under it, and its cost is the sum of those spans.
+    @opik.track(name="chat-turn")
     def answer(self, user_message: str) -> str:
+        # thread_id groups this turn with the rest of the conversation in the
+        # Threads tab; without it every turn is an unrelated trace.
+        opik_context.update_current_trace(thread_id=self.conversation_id)
         self.messages.append({"role": "user", "content": user_message})
         for _ in range(MAX_TOOL_ROUNDS):
             response = self.client.chat.completions.create(
