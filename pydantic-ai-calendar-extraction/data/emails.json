@@ -1,0 +1,87 @@
+[
+  {
+    "id": "product-sync",
+    "date": "Mon, 2 Mar 2026 09:14",
+    "from": "Katarzyna Wolny <k.wolny@harbourline.example>",
+    "to": "Tomas Eriksen <t.eriksen@harbourline.example>, Dilnoza Rahimova <d.rahimova@harbourline.example>",
+    "cc": "Ben Okafor <b.okafor@harbourline.example>",
+    "subject": "Product sync moved to Tuesday",
+    "body": "Hi all,\n\nmoving the product sync to Tuesday 10 March, 14:00-14:45 CET, in the Lisbon room on the 3rd floor. Agenda is in the shared doc.\n\nKasia",
+    "assertions": [
+      "The date is 2026-03-10, start_time is 14:00 and end_time is 14:45",
+      "The timezone is CET and the location is the Lisbon room (3rd floor is optional)",
+      "The attendees include Tomas Eriksen, Dilnoza Rahimova and Ben Okafor"
+    ]
+  },
+  {
+    "id": "lunch-no-timezone",
+    "date": "Mon, 2 Mar 2026 11:02",
+    "from": "Ines Barroso <ines@orlo-mail.example>",
+    "to": "Mara Lindqvist <mara.l@orlo-mail.example>",
+    "cc": "",
+    "subject": "lunch?",
+    "body": "hey! lunch friday? 12:30 at Cafe Orlo, the one by the tram stop. bring Joao if he's around\n\n- I",
+    "assertions": [
+      "The date is 2026-03-06 and start_time is 12:30",
+      "end_time is null because the email never says when lunch ends",
+      "timezone is null because the email never names a timezone",
+      "The location mentions Cafe Orlo"
+    ]
+  },
+  {
+    "id": "vendor-call",
+    "date": "Mon, 2 Mar 2026 16:40",
+    "from": "Priyanka Desai <priyanka.desai@quillmont.example>",
+    "to": "Rafael Quist <rafael.quist@quillmont.example>",
+    "cc": "",
+    "subject": "vendor contract call",
+    "body": "Quick call tomorrow 9am PST to go over the vendor contract. Zoom: https://zoom.example/j/884201177 (passcode 4471). It'll be me, you and Hal from legal.",
+    "assertions": [
+      "The date is 2026-03-03, start_time is 09:00 and the timezone is PST",
+      "meeting_link is https://zoom.example/j/884201177 and location is null because the call is online",
+      "end_time is null because no end or duration is given",
+      "The attendees include Priyanka Desai, Rafael Quist and Hal"
+    ]
+  },
+  {
+    "id": "reschedule-thread",
+    "date": "Wed, 4 Mar 2026 08:21",
+    "from": "Gustav Aaltonen <gustav@fennwick.example>",
+    "to": "Odile Marchetti <odile@fennwick.example>",
+    "cc": "",
+    "subject": "Re: design review",
+    "body": "Actually Thursday doesn't work for me. Can we do Friday 13 March at 10:30 instead? Same room.\n\n> On Mon, 2 Mar 2026, Odile Marchetti wrote:\n> Let's do the design review Thursday 12 March at 10:30 in Room B.\n> Bring the draft mockups.",
+    "assertions": [
+      "The date is 2026-03-13 (the new proposal), not 2026-03-12, and start_time is 10:30",
+      "The location is Room B, carried over from the quoted message",
+      "end_time and timezone are null because neither is mentioned anywhere"
+    ]
+  },
+  {
+    "id": "vague-coffee",
+    "date": "Thu, 5 Mar 2026 13:55",
+    "from": "Leona Fabri <leona@tidewater.example>",
+    "to": "Sunil Amara <sunil@tidewater.example>",
+    "cc": "",
+    "subject": "coffee",
+    "body": "we should grab coffee sometime next week, whenever works for you!",
+    "assertions": [
+      "date, start_time, end_time, timezone and location are all null because nothing concrete is proposed",
+      "The attendees include Leona Fabri and Sunil Amara"
+    ]
+  },
+  {
+    "id": "all-hands",
+    "date": "Fri, 6 Mar 2026 10:03",
+    "from": "People Team <people@brightmoor.example>",
+    "to": "all-staff@brightmoor.example",
+    "cc": "",
+    "subject": "Quarterly all-hands",
+    "body": "Our quarterly all-hands is Wednesday 18 March, 4pm-5:30pm Eastern, at the Pier Auditorium in Halifax. Whole team please, snacks provided.",
+    "assertions": [
+      "The date is 2026-03-18, start_time is 16:00 and end_time is 17:30",
+      "The timezone is Eastern and the location mentions the Pier Auditorium",
+      "attendees is empty because no individual is named in the email"
+    ]
+  }
+]
