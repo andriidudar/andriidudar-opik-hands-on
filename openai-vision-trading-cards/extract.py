@@ -1,6 +1,7 @@
 """Read typed stats off a trading-card image with gpt-4o-mini vision."""
 
 import base64
+import functools
 import json
 import os
 from pathlib import Path
@@ -27,9 +28,15 @@ from opik import Attachment, opik_context  # noqa: E402
 from opik.integrations.openai import track_openai  # noqa: E402
 
 MODEL = "gpt-4o-mini"
-# track_openai wraps the client: every completion becomes an llm span nested under
-# the calling trace, with token usage (image tokens included) and cost.
-client = track_openai(OpenAI(), project_name=PROJECT_NAME)
+
+
+@functools.cache
+def get_client() -> OpenAI:
+    """Built on first use, so importing this module (and the offline tests) needs no key."""
+    # track_openai wraps the client: every completion becomes an llm span nested under
+    # the calling trace, with token usage (image tokens included) and cost.
+    return track_openai(OpenAI(), project_name=PROJECT_NAME)
+
 
 SYSTEM_PROMPT = """\
 You read photos of fictional trading cards and copy their printed stats into
@@ -77,7 +84,7 @@ def extract_card(image_path: str) -> dict[str, Any]:
         attachments=[Attachment(data=image_path, content_type="image/png")]
     )
     image_b64 = base64.b64encode(Path(image_path).read_bytes()).decode()
-    response = client.chat.completions.create(
+    response = get_client().chat.completions.create(
         model=MODEL,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
