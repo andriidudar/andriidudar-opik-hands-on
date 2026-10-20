@@ -1,0 +1,15 @@
+[project]
+name = "openai-agents-pet-adoption"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "openai-agents>=0.22.0",
+    "opik==2.2.35",
+    "python-dotenv>=1.2.3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
