@@ -1,12 +1,10 @@
-// Scripted demo: starts the SvelteKit dev server, plays three multi-turn
-// conversations against /api/chat, prints the streamed replies, stops the server.
+// Scripted demo: makes sure the online rule exists, starts the SvelteKit dev
+// server, plays three multi-turn conversations against /api/chat, stops the
+// server, then waits for Opik's judge to score every trace.
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
-import { config } from "dotenv";
-
-config({ path: ".env", quiet: true });
-config({ path: "../.env", quiet: true });
+import { ensureAnswerRelevanceRule, listTraces, PROJECT, RULE_NAME } from "./opik-rest";
 
 const PORT = process.env.DEMO_PORT ?? "5471";
 const BASE = `http://localhost:${PORT}`;
@@ -32,6 +30,7 @@ const conversations = [
     ],
   },
   {
+    // Deliberately off-topic: the judge should have a harder time with this one.
     title: "Wandering off topic",
     turns: [
       "Which gardening gloves are best for roses?",
@@ -39,6 +38,11 @@ const conversations = [
     ],
   },
 ];
+
+// The rule has to exist before the first trace lands; Opik only scores traces
+// that arrive after a rule is enabled.
+const rule = await ensureAnswerRelevanceRule();
+console.log(`Online rule ${RULE_NAME}: ${rule.created ? "created" : "already there"} (${rule.id})`);
 
 console.log(`Starting the SvelteKit dev server on port ${PORT}...`);
 const server = spawn("node_modules/.bin/vite", ["dev", "--port", PORT, "--strictPort"], {
@@ -101,6 +105,7 @@ const message = (role: "user" | "assistant", text: string) => ({
   parts: [{ type: "text", text }],
 });
 
+let turnCount = 0;
 try {
   await waitForServer();
   for (const conversation of conversations) {
@@ -111,6 +116,7 @@ try {
       console.log(`\nYou: ${turn}\nSprout: `);
       history.push(message("user", turn));
       history.push(message("assistant", await chatTurn(chatId, history)));
+      turnCount += 1;
     }
   }
 } finally {
@@ -122,4 +128,23 @@ try {
   }
   await Promise.race([exited, sleep(10_000)]);
 }
-console.log("\nDone. Open the vercel-ai-sveltekit-garden-chat project in Opik.");
+
+// Traces arrive after the flush, and the judge scores them asynchronously.
+console.log(`\nWaiting for Opik to receive ${turnCount} traces and score them (up to 2 minutes)...`);
+const deadline = Date.now() + 120_000;
+let traces = await listTraces();
+const scored = () => traces.filter((t) => t.feedback_scores?.some((s) => s.name === RULE_NAME));
+while (Date.now() < deadline && !(traces.length >= turnCount && scored().length >= turnCount)) {
+  await sleep(5_000);
+  traces = await listTraces();
+}
+
+console.log(`\nProject ${PROJECT}: ${traces.length} traces, ${scored().length} scored by ${RULE_NAME}`);
+for (const t of traces) {
+  const s = t.feedback_scores?.find((x) => x.name === RULE_NAME);
+  console.log(`  thread ${t.thread_id?.slice(0, 8)}  ${RULE_NAME}=${s?.value ?? "pending"}  cost=$${t.total_estimated_cost ?? "?"}`);
+}
+if (traces.length < turnCount || scored().length < turnCount) {
+  console.error("Not every trace was scored in time.");
+  process.exit(1);
+}

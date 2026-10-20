@@ -9,7 +9,9 @@
     "build": "vite build",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
-    "demo": "tsx scripts/demo.ts"
+    "demo": "tsx scripts/demo.ts",
+    "rule": "tsx scripts/rule.ts",
+    "clean": "tsx scripts/clean.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.98",
