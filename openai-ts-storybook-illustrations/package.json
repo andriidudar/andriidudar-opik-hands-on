@@ -9,7 +9,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "openai": "^6.0.1"
+    "openai": "^6.0.1",
+    "opik": "2.2.105",
+    "opik-openai": "2.2.105"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
@@ -18,5 +20,10 @@
   },
   "engines": {
     "node": ">=20.12"
+  },
+  "overrides": {
+    "opik-openai": {
+      "opik": "$opik"
+    }
   }
 }
