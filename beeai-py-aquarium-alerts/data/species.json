@@ -1,0 +1,12 @@
+{
+  "clownfish":      {"temp_c": [24, 28], "ph": [8.0, 8.4], "ammonia_ppm_max": 0.02, "salinity_ppt": [33, 36]},
+  "blue tang":      {"temp_c": [24, 28], "ph": [8.1, 8.4], "ammonia_ppm_max": 0.02, "salinity_ppt": [34, 36]},
+  "acropora coral": {"temp_c": [24, 27], "ph": [8.1, 8.4], "ammonia_ppm_max": 0.01, "salinity_ppt": [34, 36]},
+  "garibaldi":      {"temp_c": [10, 18], "ph": [7.9, 8.3], "ammonia_ppm_max": 0.05, "salinity_ppt": [32, 35]},
+  "giant kelp":     {"temp_c": [8, 18],  "ph": [7.8, 8.3], "ammonia_ppm_max": 0.10, "salinity_ppt": [31, 35]},
+  "leopard shark":  {"temp_c": [10, 20], "ph": [7.9, 8.3], "ammonia_ppm_max": 0.05, "salinity_ppt": [32, 35]},
+  "sea star":       {"temp_c": [10, 18], "ph": [7.9, 8.3], "ammonia_ppm_max": 0.05, "salinity_ppt": [32, 34]},
+  "hermit crab":    {"temp_c": [10, 20], "ph": [7.8, 8.3], "ammonia_ppm_max": 0.10, "salinity_ppt": [31, 35]},
+  "sea urchin":     {"temp_c": [10, 18], "ph": [7.9, 8.3], "ammonia_ppm_max": 0.05, "salinity_ppt": [32, 34]},
+  "moon jelly":     {"temp_c": [15, 22], "ph": [7.8, 8.2], "ammonia_ppm_max": 0.05, "salinity_ppt": [30, 34]}
+}

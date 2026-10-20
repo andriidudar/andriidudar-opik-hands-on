@@ -1,0 +1,42 @@
+{
+  "reef-3": {
+    "name": "Coral Reef Gallery (tank 3)",
+    "species": ["clownfish", "blue tang", "acropora coral"],
+    "log": [
+      {"time": "06:00", "temp_c": 25.8, "ph": 8.20, "ammonia_ppm": 0.00, "salinity_ppt": 35.0},
+      {"time": "08:00", "temp_c": 26.0, "ph": 8.18, "ammonia_ppm": 0.00, "salinity_ppt": 35.1},
+      {"time": "10:00", "temp_c": 27.9, "ph": 8.05, "ammonia_ppm": 0.02, "salinity_ppt": 35.1},
+      {"time": "12:00", "temp_c": 29.4, "ph": 7.96, "ammonia_ppm": 0.04, "salinity_ppt": 35.2}
+    ]
+  },
+  "kelp-1": {
+    "name": "Kelp Forest (tank 1)",
+    "species": ["garibaldi", "giant kelp", "leopard shark"],
+    "log": [
+      {"time": "06:00", "temp_c": 14.1, "ph": 8.10, "ammonia_ppm": 0.00, "salinity_ppt": 33.5},
+      {"time": "08:00", "temp_c": 14.0, "ph": 8.09, "ammonia_ppm": 0.01, "salinity_ppt": 33.5},
+      {"time": "10:00", "temp_c": 14.2, "ph": 8.08, "ammonia_ppm": 0.01, "salinity_ppt": 33.6},
+      {"time": "12:00", "temp_c": 14.3, "ph": 8.08, "ammonia_ppm": 0.02, "salinity_ppt": 33.6}
+    ]
+  },
+  "touch-2": {
+    "name": "Touch Pool (tank 2)",
+    "species": ["sea star", "hermit crab", "sea urchin"],
+    "log": [
+      {"time": "06:00", "temp_c": 16.0, "ph": 8.05, "ammonia_ppm": 0.00, "salinity_ppt": 33.0},
+      {"time": "08:00", "temp_c": 16.2, "ph": 8.04, "ammonia_ppm": 0.05, "salinity_ppt": 33.2},
+      {"time": "10:00", "temp_c": 16.4, "ph": 8.01, "ammonia_ppm": 0.12, "salinity_ppt": 33.8},
+      {"time": "12:00", "temp_c": 16.5, "ph": 7.98, "ammonia_ppm": 0.31, "salinity_ppt": 34.9}
+    ]
+  },
+  "jelly-4": {
+    "name": "Jellyfish Drift (tank 4)",
+    "species": ["moon jelly"],
+    "log": [
+      {"time": "06:00", "temp_c": 18.0, "ph": 8.00, "ammonia_ppm": 0.00, "salinity_ppt": 32.0},
+      {"time": "08:00", "temp_c": 18.1, "ph": 8.00, "ammonia_ppm": 0.00, "salinity_ppt": 32.0},
+      {"time": "10:00", "temp_c": 18.1, "ph": 7.99, "ammonia_ppm": 0.00, "salinity_ppt": 32.1},
+      {"time": "12:00", "temp_c": 18.2, "ph": 7.99, "ammonia_ppm": 0.01, "salinity_ppt": 32.1}
+    ]
+  }
+}

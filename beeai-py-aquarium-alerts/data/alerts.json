@@ -1,0 +1,6 @@
+[
+  {"id": "A1", "tank": "reef-3",  "text": "Tank reef-3 temperature sensor reads 29.4 C and climbing.", "expected_severity": "critical"},
+  {"id": "A2", "tank": "kelp-1",  "text": "Tank kelp-1 ph probe flagged a small dip, please check.", "expected_severity": "info"},
+  {"id": "A3", "tank": "touch-2", "text": "Tank touch-2 ammonia sensor spiked at 12:00.", "expected_severity": "warning"},
+  {"id": "A4", "tank": "jelly-4", "text": "Tank jelly-4 salinity sensor went offline for two minutes and came back.", "expected_severity": "info"}
+]

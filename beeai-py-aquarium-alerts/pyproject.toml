@@ -1,0 +1,15 @@
+[project]
+name = "beeai-py-aquarium-alerts"
+version = "0.1.0"
+description = "A BeeAI ReAct agent that triages water-quality alerts for a fictional public aquarium"
+requires-python = ">=3.12"
+dependencies = [
+    "beeai-framework==0.1.85",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
