@@ -2,6 +2,8 @@
 import re
 from pathlib import Path
 
+import opik
+
 NOTES_PATH = Path(__file__).resolve().parent.parent / "data" / "lessons.md"
 
 
@@ -25,6 +27,9 @@ def _words(text: str) -> set[str]:
     return {w for w in re.findall(r"\w+", text.lower()) if len(w) > 2}
 
 
+# A named tool span: OpikTracer can drop plain retriever runs in some versions, so
+# retrieval is its own @track(type="tool") span nested under the chain's root run.
+@opik.track(name="find_lesson_notes", type="tool", project_name="langchain-fastapi-language-tutor")
 def find_notes(question: str, k: int = 2, sections: dict[str, str] | None = None) -> str:
     """Return the k lesson sections sharing the most words with the question."""
     sections = sections if sections is not None else load_sections()

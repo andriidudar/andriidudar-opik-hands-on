@@ -6,8 +6,11 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
+from opik.integrations.langchain import OpikTracer
+
 from tutor.chain import build_chain, remember
 
+PROJECT = "langchain-fastapi-language-tutor"
 STATIC = Path(__file__).resolve().parent.parent / "static"
 
 app = FastAPI(title="Luz, the Spanish tutor")
@@ -35,6 +38,16 @@ def index():
 
 @app.post("/chat", response_model=ChatOut)
 def chat(body: ChatIn):
-    reply = get_chain().invoke(body.message, config={"configurable": {"session_id": body.session_id}})
+    # OpikTracer turns the chain run into a trace; thread_id=session_id groups every turn
+    # of one learner into a single conversation in the Threads tab.
+    tracer = OpikTracer(project_name=PROJECT, thread_id=body.session_id, tags=["language-tutor"])
+    reply = get_chain().invoke(
+        body.message,
+        config={
+            "callbacks": [tracer],
+            "run_name": "tutor-turn",  # name of the root run / trace
+            "configurable": {"session_id": body.session_id},
+        },
+    )
     remember(body.session_id, body.message, reply)
     return ChatOut(reply=reply, session_id=body.session_id)

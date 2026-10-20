@@ -10,6 +10,7 @@ dependencies = [
     "python-dotenv>=1.0",
     "langchain-core>=1.0",
     "langchain-openai>=1.0",
+    "opik>=2.2.105",
 ]
 
 [dependency-groups]

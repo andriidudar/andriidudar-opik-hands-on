@@ -1,4 +1,5 @@
 """Scripted demo: two multi-turn learners hit POST /chat through FastAPI's TestClient."""
+import opik
 from fastapi.testclient import TestClient
 
 from tutor.app import app
@@ -25,6 +26,7 @@ def main() -> None:
                 r = client.post("/chat", json={"message": message, "session_id": session_id})
                 r.raise_for_status()
                 print(f"\nYou: {message}\nLuz: {r.json()['reply']}")
+    opik.flush_tracker()  # traces are sent in the background; flush before the process exits
 
 
 if __name__ == "__main__":
