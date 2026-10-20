@@ -6,7 +6,13 @@ export const MODEL = "claude-haiku-4-5-20251001";
 
 const client = new Anthropic({ baseURL: "https://api.anthropic.com" });
 
-function systemPrompt(appliance: Appliance): string {
+// LOOSE_PROMPT=1 drops the citation rules: a deliberately weaker prompt to see the suite fail.
+const LOOSE = process.env.LOOSE_PROMPT === "1";
+
+export function systemPrompt(appliance: Appliance): string {
+  if (LOOSE) {
+    return `You are a friendly kitchen-appliance expert. The ${APPLIANCE_NAMES[appliance]} manual is below. Answer helpfully and cite the manual's wording where you can.\n\n<manual>\n${loadManual(appliance)}\n</manual>`;
+  }
   return `You answer questions about the ${APPLIANCE_NAMES[appliance]} owner's manual, reproduced in full below.
 
 Rules:
