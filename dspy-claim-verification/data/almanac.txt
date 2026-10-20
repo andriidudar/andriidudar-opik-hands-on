@@ -1,0 +1,14 @@
+L01 The Republic of Tamarind Cay is an archipelago of 14 inhabited islands; its capital is Port Selwyn on the island of Greater Cay.
+L02 The national population was 212,000 at the 2023 census, and 61% of residents live in Port Selwyn.
+L03 The official currency is the cay shilling, issued by the Bank of Tamarind since 1971.
+L04 The national language is Cayan; English is used in courts and in schools above grade 6.
+L05 The Lantern Festival is held on the first full moon of November and lasts three nights.
+L06 The highest point is Mount Orrin at 412 metres, on the island of Little Orrin.
+L07 The Selwyn Causeway, opened in 1988, links Greater Cay to the island of Pell and is 3.4 kilometres long.
+L08 Ferries between the islands are free for residents and cost 8 shillings for visitors.
+L09 The main export is dried tamarind pulp, followed by sea salt and woven palm goods.
+L10 Voting age is 17, and the 31-seat Assembly is elected every four years.
+L11 The Tamarind Cay Observatory on Mount Orrin was founded in 1994 and is staffed by nine researchers.
+L12 Rainfall peaks between June and September; the dry season runs from January to March.
+L13 The national bird is the crimson tern, which nests only on the island of Pell.
+L14 Port Selwyn's harbour handles about 40 cargo ships per month.

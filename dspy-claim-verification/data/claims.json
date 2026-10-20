@@ -1,0 +1,24 @@
+{
+  "train": [
+    {"claim": "Port Selwyn is the capital of Tamarind Cay.", "verdict": "SUPPORTED", "evidence": "L01"},
+    {"claim": "The national currency is the cay dollar.", "verdict": "REFUTED", "evidence": "L03"},
+    {"claim": "Tamarind Cay has a national railway network.", "verdict": "NOT ENOUGH INFO", "evidence": "none"},
+    {"claim": "The Lantern Festival lasts three nights.", "verdict": "SUPPORTED", "evidence": "L05"},
+    {"claim": "Mount Orrin stands 600 metres high.", "verdict": "REFUTED", "evidence": "L06"},
+    {"claim": "Cayan children start school at age five.", "verdict": "NOT ENOUGH INFO", "evidence": "none"},
+    {"claim": "Dried tamarind pulp is the main export.", "verdict": "SUPPORTED", "evidence": "L09"},
+    {"claim": "The Assembly is elected every six years.", "verdict": "REFUTED", "evidence": "L10"},
+    {"claim": "The Observatory has nine researchers.", "verdict": "SUPPORTED", "evidence": "L11"}
+  ],
+  "test": [
+    {"claim": "The Selwyn Causeway connects Greater Cay to Pell.", "verdict": "SUPPORTED", "evidence": "L07"},
+    {"claim": "Visitors ride the inter-island ferries for free.", "verdict": "REFUTED", "evidence": "L08"},
+    {"claim": "The crimson tern nests on several different islands.", "verdict": "REFUTED", "evidence": "L13"},
+    {"claim": "Tamarind Cay has 14 inhabited islands.", "verdict": "SUPPORTED", "evidence": "L01"},
+    {"claim": "The dry season runs from January to March.", "verdict": "SUPPORTED", "evidence": "L12"},
+    {"claim": "The island nation has a national football team.", "verdict": "NOT ENOUGH INFO", "evidence": "none"},
+    {"claim": "Most residents live outside Port Selwyn.", "verdict": "REFUTED", "evidence": "L02"},
+    {"claim": "The Bank of Tamarind sets the interest rate at 4 percent.", "verdict": "NOT ENOUGH INFO", "evidence": "none"},
+    {"claim": "Voting starts at age 17.", "verdict": "SUPPORTED", "evidence": "L10"}
+  ]
+}

@@ -1,0 +1,20 @@
+[project]
+name = "dspy-claim-verification"
+version = "0.1.0"
+description = "A DSPy fact-checking program over a fictional almanac, compiled with BootstrapFewShot and scored by the same Opik test suite before and after."
+requires-python = ">=3.12"
+dependencies = [
+    "dspy>=3.0",
+    "opik==2.2.105",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
