@@ -1,6 +1,6 @@
 """Agent 3: draft the weekly bulletin from the findings."""
 
-from ..llm import llm
+from ..llm import get_llm
 from ..state import BulletinState
 
 SYSTEM = (
@@ -20,5 +20,5 @@ def format_notes(findings: list[dict]) -> str:
 
 def writer(state: BulletinState) -> dict:
     notes = format_notes(state["findings"])
-    draft = llm.invoke([("system", SYSTEM + notes), ("user", state["brief"])])
+    draft = get_llm().invoke([("system", SYSTEM + notes), ("user", state["brief"])])
     return {"bulletin": draft.content}

@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, Field
 
-from ..llm import llm
+from ..llm import get_llm
 from ..state import BulletinState
 
 
@@ -20,5 +20,5 @@ SYSTEM = (
 
 
 def planner(state: BulletinState) -> dict:
-    plan = llm.with_structured_output(Plan).invoke([("system", SYSTEM), ("user", state["brief"])])
+    plan = get_llm().with_structured_output(Plan).invoke([("system", SYSTEM), ("user", state["brief"])])
     return {"questions": plan.questions, "findings": []}

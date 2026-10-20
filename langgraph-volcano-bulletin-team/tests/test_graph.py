@@ -27,7 +27,7 @@ class FakeLLM:
 def test_graph_loops_researcher_once_per_question(monkeypatch):
     fake = FakeLLM()
     for mod in (planner_mod, researcher_mod, writer_mod):
-        monkeypatch.setattr(mod, "llm", fake)
+        monkeypatch.setattr(mod, "get_llm", lambda: fake)
     from volcano_bulletin.graph import build_graph
 
     # retrieve is a @opik.track(type="tool") function; with tracking disabled it is a plain call.

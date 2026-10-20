@@ -24,15 +24,16 @@ Open the `langgraph-volcano-bulletin-team` project, Traces tab. One run gives ex
 
 - The agent graph panel on the trace page draws planner, researcher, writer and the researcher-to-researcher loop edge. It appears because the tracer is given the compiled graph.
 - Each `researcher` span holds a `search_notes` tool span (retrieval, with the question as input and the matched sections as output) and a `ChatOpenAI` llm span with tokens and cost.
-- A typical run is about 6 llm-bearing node passes and roughly 3,900 tokens for about $0.0011 on gpt-4o-mini. The researcher is the biggest line in total (four passes, about 2,300 tokens), the writer is the biggest single call.
+- The verified run has 22 spans: 6 node spans (planner, researcher x4, writer) plus their children, 6 `ChatOpenAI` llm spans and 4 `search_notes` tool spans. It used 3,812 tokens for about $0.0011 on gpt-4o-mini. The researcher is the biggest line in total (four passes, 2,273 tokens); the writer is the biggest single call (1,290 tokens).
+- The trace metadata carries a `_opik_graph_definition` entry: that is the graph layout the agent-graph panel reads.
 - The terminal prints the same split, summed from the llm spans:
 
 ```
 agent        passes   tokens   cost (USD)
-planner           1      250     0.000072
-researcher        4     2333     0.000639
-writer            1     1365     0.000424
-total             6     3948     0.001136
+planner           1      249     0.000072
+researcher        4     2273     0.000604
+writer            1     1290     0.000406
+total             6     3812     0.001082
 ```
 
 ## Run it yourself
@@ -47,13 +48,21 @@ total             6     3948     0.001136
 ## Poke around
 
 - Change the brief in step 4 and watch how many questions the planner produces and how many researcher spans appear.
-- Remove `graph=...` from the `OpikTracer(...)` call in `cli.py` and reload the trace: the spans stay, the graph panel is empty.
+- Open the trace's metadata and find `_opik_graph_definition`, then compare it with the edges declared in `graph.py`.
 - Delete the `@opik.track` line on `retrieve` and see the `search_notes` tool span disappear from each researcher pass.
 - Edit a number in `data/gas-readings.md` and check that it reaches the bulletin, and in the `search_notes` output.
 
 ## Gotchas we hit
 
-None yet beyond the ones below.
+**`OpenAIError: Missing credentials` when you only import the package.** The chat model was created at import time, and `ChatOpenAI(...)` raises without `OPENAI_API_KEY`, so `uv run pytest` with keys unset failed during collection. Build it on first use instead, as in `llm.py`:
+
+```python
+@lru_cache(maxsize=1)
+def get_llm() -> ChatOpenAI:
+    return ChatOpenAI(model=MODEL, temperature=0)
+```
+
+**The cost column is empty on the `planner` and `researcher` spans.** Only the nested `ChatOpenAI` llm spans carry usage and cost; the LangGraph node spans above them show none (`total_estimated_cost` is `None`). To get a per-agent figure, walk each llm span's parents up to the node, as `report.agent_of` does, and sum there.
 
 ## How it's put together
 

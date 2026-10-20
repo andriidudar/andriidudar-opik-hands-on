@@ -3,7 +3,7 @@
 import opik
 
 from ..corpus import load_corpus, search
-from ..llm import llm
+from ..llm import get_llm
 from ..state import BulletinState, Finding
 
 CORPUS = load_corpus()
@@ -26,7 +26,7 @@ def researcher(state: BulletinState) -> dict:
     question = state["questions"][len(state["findings"])]
     hits = retrieve(question)
     excerpts = "\n\n---\n\n".join(f"[{h['source']}]\n{h['text']}" for h in hits)
-    answer = llm.invoke([("system", SYSTEM + excerpts), ("user", question)])
+    answer = get_llm().invoke([("system", SYSTEM + excerpts), ("user", question)])
     finding: Finding = {
         "question": question,
         "answer": answer.content,
