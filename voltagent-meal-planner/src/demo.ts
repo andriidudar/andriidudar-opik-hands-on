@@ -23,9 +23,11 @@ if (!process.env.OPENAI_API_KEY) {
 
 const { VoltAgent } = await import("@voltagent/core");
 const { mealPlanner } = await import("./agent.ts");
+// Imported after dotenv so the exporter sees OPIK_* variables when it initializes.
+const { observability, flushTelemetry, PROJECT_NAME } = await import("./telemetry/setup.ts");
 
-// Registering the agent on a VoltAgent instance; no server option, so this stays a script.
-new VoltAgent({ agents: { mealPlanner } });
+// Passing `observability` makes VoltAgent emit its OTel spans through the Opik exporter; no server option keeps this a script.
+new VoltAgent({ agents: { mealPlanner }, observability });
 
 const REQUESTS = [
   "Which vegan recipes can I cook this week with at most one missing ingredient?",
@@ -38,4 +40,7 @@ for (const [i, request] of REQUESTS.entries()) {
   const result = await mealPlanner.generateText(request);
   console.log(`Planner: ${result.text}`);
 }
+// Flush buffered spans so the final request reaches Opik before the process exits.
+await flushTelemetry();
+console.log(`\nDone. Open the "${PROJECT_NAME}" project in Opik to see the traces.`);
 process.exit(0);
