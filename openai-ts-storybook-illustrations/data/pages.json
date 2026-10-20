@@ -1,0 +1,24 @@
+{
+  "title": "Pip and the Borrowed Moon",
+  "hero": "Pip, a small round snail with a spiral shell the color of warm honey and a tiny glowing lantern balanced on the shell's tip",
+  "pages": [
+    {
+      "id": "page-01",
+      "text": "Every evening, Pip climbed the old stone wall to light the garden lanterns, one shiny dewdrop at a time.",
+      "setting": "a mossy stone garden wall at dusk, dewdrops on the leaves, fireflies just waking up",
+      "mood": "calm and cozy"
+    },
+    {
+      "id": "page-02",
+      "text": "One night the moon slipped behind a cloud and the whole garden went dark. 'Oh dear,' whispered Pip.",
+      "setting": "the same garden in deep blue darkness, a big cloud covering the moon, Pip looking up worried",
+      "mood": "quiet and a little worried"
+    },
+    {
+      "id": "page-03",
+      "text": "So Pip held the lantern high, and the fireflies gathered round, until the garden glowed like a little moon of its own.",
+      "setting": "Pip on a mushroom stage surrounded by dozens of fireflies, the whole garden softly glowing gold",
+      "mood": "warm and triumphant"
+    }
+  ]
+}
