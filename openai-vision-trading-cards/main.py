@@ -1,5 +1,7 @@
 """Draw the fictional cards, send each one to gpt-4o-mini, print the stats."""
 
+import opik
+
 from cardgen import load_cards, render_all
 from extract import MODEL, extract_card
 
@@ -11,6 +13,9 @@ def main() -> None:
         fields = extract_card(str(paths[card["id"]]))
         print(f"  {card['id']} ({card['style']})")
         print(f"    -> {fields}\n")
+
+    # Traces are sent from a background thread; flush so they all land before exit.
+    opik.flush_tracker()
 
 
 if __name__ == "__main__":

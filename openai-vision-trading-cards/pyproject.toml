@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "gpt-4o-mini reads stats off generated trading-card images; the card images ride along on Opik traces and an Opik test suite reports honest failures"
 requires-python = ">=3.12"
 dependencies = [
+    "opik==2.2.105",
     "openai>=3.24.0",
     "pillow>=12.3.0",
     "python-dotenv>=1.2.4",
