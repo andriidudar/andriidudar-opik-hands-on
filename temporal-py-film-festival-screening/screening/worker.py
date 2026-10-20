@@ -1,6 +1,8 @@
 """The Temporal worker: runs as its own OS process, separate from the starter."""
 import asyncio
 
+import opik
+
 from temporalio.client import Client
 from temporalio.worker import Worker
 
@@ -23,7 +25,12 @@ async def main() -> None:
         ],
     )
     print("WORKER_READY", flush=True)
-    await worker.run()
+    try:
+        await worker.run()
+    finally:
+        # Spans are sent from a background thread; flushing on shutdown stops the last
+        # activity's spans from being lost when the demo stops this process.
+        opik.flush_tracker()
 
 
 if __name__ == "__main__":

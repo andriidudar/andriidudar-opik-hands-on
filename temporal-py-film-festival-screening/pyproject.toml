@@ -6,6 +6,7 @@ requires-python = ">=3.12"
 dependencies = [
     "temporalio>=1.8",
     "openai>=1.50",
+    "opik==2.2.105",
     "python-dotenv>=1.2.3",
 ]
 

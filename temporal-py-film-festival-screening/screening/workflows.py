@@ -15,19 +15,20 @@ class ScreenSubmission:
     @workflow.run
     async def run(self, inp: ScreeningInput) -> ScreeningResult:
         sub = inp.submission
+        th = inp.trace_headers  # forwarded to every activity so the worker can join the trace
         opts = {"start_to_close_timeout": timedelta(seconds=60)}
 
-        eligibility = await workflow.execute_activity(acts.check_eligibility, sub, **opts)
+        eligibility = await workflow.execute_activity(acts.check_eligibility, args=[sub, th], **opts)
         if not eligibility.eligible:
             return ScreeningResult(sub.id, "reject", None, "Ineligible: " + "; ".join(eligibility.reasons))
 
-        screen = await workflow.execute_activity(acts.screen_synopsis, sub, **opts)
+        screen = await workflow.execute_activity(acts.screen_synopsis, args=[sub, th], **opts)
         # Flaky step: the first attempt fails, the retry (after ~1 s) succeeds.
         screener = await workflow.execute_activity(
             acts.assign_screener,
-            screen.genre,
+            args=[screen.genre, th],
             retry_policy=RetryPolicy(initial_interval=timedelta(seconds=1), maximum_attempts=4),
             **opts,
         )
-        letter = await workflow.execute_activity(acts.write_decision_letter, args=[sub, screen, screener], **opts)
+        letter = await workflow.execute_activity(acts.write_decision_letter, args=[sub, screen, screener, th], **opts)
         return ScreeningResult(sub.id, decide(screen.fit_score), screener.name if screener else None, letter)

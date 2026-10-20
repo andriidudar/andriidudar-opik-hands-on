@@ -7,6 +7,7 @@ import subprocess
 import sys
 import time
 
+import opik
 from temporalio.client import Client
 
 from screening.config import TEMPORAL_ADDRESS, TEMPORAL_PORT, TEMPORAL_UI_PORT
@@ -55,6 +56,8 @@ async def run() -> None:
             print(f"{sub.id} {sub.title!r}: {result.decision} (screener: {result.screener})")
             print(f"  {result.letter[:160]!r}")
     finally:
+        # Flush the starter's spans before exiting; they are sent from a background thread.
+        opik.flush_tracker()
         if worker:
             stop(worker)
         stop(server)

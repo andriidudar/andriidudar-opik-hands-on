@@ -6,6 +6,10 @@ from dotenv import find_dotenv, load_dotenv
 # Walks up from this folder, so the repo-root .env is found without copying it.
 load_dotenv(find_dotenv(usecwd=False))
 
+# Both processes import this module first, so both log to the same Opik project
+# (the Opik SDK reads OPIK_PROJECT_NAME when its client is first created).
+os.environ.setdefault("OPIK_PROJECT_NAME", "temporal-py-film-festival-screening")
+
 TEMPORAL_PORT = 7241
 TEMPORAL_UI_PORT = 8241
 TEMPORAL_ADDRESS = os.environ.get("TEMPORAL_ADDRESS", f"localhost:{TEMPORAL_PORT}")
