@@ -1,5 +1,6 @@
 {
   "shop": "Spoke & Sprocket Cycle Works",
+  "today": "2026-10-30",
   "labor_rate_per_hour": 60,
   "services": {
     "puncture repair": {"hours": 0.5, "parts": []},

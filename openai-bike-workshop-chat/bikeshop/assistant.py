@@ -19,6 +19,8 @@ def system_prompt() -> str:
         "Answer questions about repair quotes, open service slots and parts. "
         "Always use the tools for prices, slots and stock; never guess numbers. "
         "If a part is out of stock, say so. Be brief and friendly. "
+        f"Today is {shop['today']}. To answer which days are open, call "
+        "check_service_slots with no date instead of guessing dates, and do not name weekdays. "
         f"Shop policy: {shop['policies']}"
     )
 
@@ -32,6 +34,7 @@ class Assistant:
         # token usage and cost, nested under the current turn's trace.
         self.client = client or track_openai(OpenAI())
         self.messages = [{"role": "system", "content": system_prompt()}]
+        self.last_trace_id: str | None = None
 
     # One call to answer() is one trace named "chat-turn": the llm and tool spans
     # of this turn hang under it, and its cost is the sum of those spans.
@@ -40,6 +43,10 @@ class Assistant:
         # thread_id groups this turn with the rest of the conversation in the
         # Threads tab; without it every turn is an unrelated trace.
         opik_context.update_current_trace(thread_id=self.conversation_id)
+        # Remember the trace id so feedback can be attached to this turn later.
+        # With OPIK_TRACK_DISABLE=true there is no current trace, so guard it.
+        trace = opik_context.get_current_trace_data()
+        self.last_trace_id = trace.id if trace else None
         self.messages.append({"role": "user", "content": user_message})
         for _ in range(MAX_TOOL_ROUNDS):
             response = self.client.chat.completions.create(
