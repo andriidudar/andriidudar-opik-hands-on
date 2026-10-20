@@ -5,6 +5,7 @@ description = "Route code-review summaries across models with LiteLLM and compar
 requires-python = ">=3.12"
 dependencies = [
     "litellm>=1.79",
+    "opik==2.2.105",
     "python-dotenv>=1.2.3",
 ]
 

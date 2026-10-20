@@ -4,9 +4,11 @@ import time
 from dataclasses import dataclass
 
 import litellm
+import opik
 
 from .config import SYSTEM_PROMPT, short_name
 from .diffs import Diff
+from .tracing import label_trace, llm_metadata
 
 
 @dataclass
@@ -26,9 +28,18 @@ def build_messages(diff: Diff) -> list[dict]:
     ]
 
 
+# @opik.track opens one trace per review (a general span named review_diff); the llm
+# span from LiteLLM nests inside it, so each trace = one diff reviewed by one model.
+@opik.track(name="review_diff")
 def review_diff(model: str, diff: Diff) -> Review:
+    label_trace(short_name(model), diff.name)
     start = time.perf_counter()
-    response = litellm.completion(model=model, messages=build_messages(diff), max_tokens=300)
+    response = litellm.completion(
+        model=model,
+        messages=build_messages(diff),
+        max_tokens=300,
+        metadata=llm_metadata(short_name(model)),
+    )
     latency = time.perf_counter() - start
     return Review(
         diff=diff.name,
@@ -45,6 +56,6 @@ def route_all(models: list[str], diffs: list[Diff]) -> list[Review]:
     for model in models:
         for diff in diffs:
             review = review_diff(model, diff)
-            print(f"  {review.model:<24} {diff.name:<18} {review.latency_s:5.2f}s ${review.cost_usd:.6f}")
+            print(f"  {review.model:<26} {diff.name:<17} {review.latency_s:5.2f}s ${review.cost_usd:.6f}")
             reviews.append(review)
     return reviews
