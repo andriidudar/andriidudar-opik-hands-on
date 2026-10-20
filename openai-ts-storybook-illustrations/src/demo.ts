@@ -5,6 +5,7 @@ import process from "node:process";
 import OpenAI from "openai";
 import { Opik } from "opik";
 import { trackOpenAI } from "opik-openai";
+import { ensureBriefVersions } from "./briefs.js";
 import { illustrate } from "./illustrate.js";
 import { briefVariables, loadStory } from "./pages.js";
 import { BRIEF_V1, BRIEF_V2, PROMPT_NAME, render } from "./prompts.js";
@@ -33,15 +34,34 @@ async function main() {
   const story = loadStory();
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY ?? "dry-run" });
 
-  for (const [version, template] of [["v1", BRIEF_V1], ["v2", BRIEF_V2]] as const) {
+  if (dryRun) {
+    for (const [version, template] of [["v1", BRIEF_V1], ["v2", BRIEF_V2]] as const) {
+      console.log(`\nBrief ${version}:`);
+      for (const page of story.pages) {
+        console.log(`--- ${page.id} ---\n${render(template, briefVariables(story, page))}`);
+      }
+    }
+    return;
+  }
+
+  // Register the brief in the Opik prompt library (v1, then v2 with its change
+  // reason) and read both versions back; the UI's Prompts tab shows the diff.
+  const { v1, v2, created } = await ensureBriefVersions(opik, PROJECT);
+  console.log(created ? `Registered "${PROMPT_NAME}": ${created} version(s) created.` : `"${PROMPT_NAME}" already has v1 and v2.`);
+  const versions = await v2.getVersions();
+  if (versions.length >= 2) {
+    console.log("\nDiff between the newest and oldest brief version:");
+    versions[0].compareTo(versions[versions.length - 1]);
+  }
+
+  for (const brief of [v1, v2]) {
+    const version = brief.version ?? "unknown";
     console.log(`\nBrief ${version}:`);
     for (const page of story.pages) {
       const vars = briefVariables(story, page);
-      const prompt = render(template, vars);
-      if (dryRun) {
-        console.log(`--- ${page.id} ---\n${prompt}`);
-        continue;
-      }
+      // prompt.format fills the library template's {{variables}}, so the text sent
+      // to the model is exactly what the library stores for this version.
+      const prompt = brief.format(vars);
 
       // One trace per page: input = the page variables and rendered brief,
       // tagged with the brief version so v1 and v2 pictures can be filtered apart.
@@ -49,7 +69,7 @@ async function main() {
         name: "illustrate-page",
         input: { ...vars, image_prompt: prompt },
         tags: [version, page.id],
-        metadata: { prompt_name: PROMPT_NAME, prompt_version: version },
+        metadata: { prompt_name: PROMPT_NAME, prompt_version: version, prompt_id: brief.id },
       });
 
       // trackOpenAI wraps the client: images.generate becomes a child span of
