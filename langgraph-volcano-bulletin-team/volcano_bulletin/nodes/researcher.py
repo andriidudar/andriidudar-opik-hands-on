@@ -1,5 +1,7 @@
 """Agent 2: answer one open question per pass from the corpus."""
 
+import opik
+
 from ..corpus import load_corpus, search
 from ..llm import llm
 from ..state import BulletinState, Finding
@@ -13,6 +15,9 @@ SYSTEM = (
 )
 
 
+# A named tool function makes retrieval show up as its own "tool" span under the
+# researcher node, with the question as input and the hit sections as output.
+@opik.track(name="search_notes", type="tool")
 def retrieve(question: str) -> list[dict]:
     return search(question, CORPUS)
 
