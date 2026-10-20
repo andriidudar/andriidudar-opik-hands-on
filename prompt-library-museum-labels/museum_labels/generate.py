@@ -19,13 +19,21 @@ dotenv.load_dotenv()
 
 MODEL = "gpt-4o-mini"
 
-# track_openai wraps the client: every completion becomes an llm span with
-# model, token usage and cost, nested under the calling @opik.track trace.
-client = track_openai(OpenAI(), project_name=PROJECT_NAME)
+_client = None
+
+
+def client():
+    # Built lazily so importing the package (and the offline tests) needs no key.
+    global _client
+    if _client is None:
+        # track_openai wraps the client: every completion becomes an llm span
+        # with model, token usage and cost, nested under the calling trace.
+        _client = track_openai(OpenAI(), project_name=PROJECT_NAME)
+    return _client
 
 
 def write_label(artefact: dict, system_prompt: str) -> str:
-    response = client.chat.completions.create(
+    response = client().chat.completions.create(
         model=MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
