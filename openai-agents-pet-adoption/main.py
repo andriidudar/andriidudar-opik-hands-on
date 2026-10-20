@@ -79,7 +79,7 @@ triage_agent = Agent(
 
 # Each conversation becomes one Opik thread. The last one is a trap: its second turn mixes a
 # surrender booking with an adoption request, so the single specialist the triage picks has to
-# stretch (in our run it misused book_surrender for the adoption; the tool span shows it).
+# stretch (in our run it booked a second surrender for the sister instead of reserving; the tool span shows it).
 DEMO_CONVERSATIONS = {
     "kid-friendly-dog": [
         "Hi, we have two small kids and want a dog. What do you have?",

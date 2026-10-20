@@ -4,7 +4,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white)
 ![openai-agents](https://img.shields.io/badge/openai--agents-0.22%2B-412991?style=flat)
-![Opik](https://img.shields.io/badge/Opik-2.2.35-2f54eb?style=flat)
+![Opik](https://img.shields.io/badge/Opik-2.2.105-2f54eb?style=flat)
 
 When a chat made of several agents gives a bad answer, the reply alone doesn't say whether the router, the specialist or a tool was at fault. This example is a small animal-shelter front desk. A triage agent hands visitors to an adoption, foster or surrender specialist, and each specialist calls tools over a made-up shelter database. Opik's `OpikTracingProcessor` records the handoffs and every tool call, and a shared `group_id` folds each visitor's turns into one thread.
 
@@ -18,13 +18,13 @@ When a chat made of several agents gives a bad answer, the reply alone doesn't s
 
 ## See it in Opik
 
-Open the `openai-agents-pet-adoption` project. In **Traces** there are five rows named `Shelter front desk`, one per turn, each with 11-12 spans. Open one: the tree is `Task` > `Front Desk Triage` (one `Turn` with an `llm` span `Response`) > `Handoff` > the specialist (for example `Adoption Specialist`) > its `Turn`s, with a `tool` span between them such as `find_animals` or `reserve`. Click a tool span to see the arguments the model chose (`{"animal_id":"A-101","adopter_name":"Maya Okafor"}`) and the JSON the tool returned. LLM spans show model `gpt-4o-mini-2024-07-18`, token counts and an estimated cost (about $0.00004 per call); a whole turn costs roughly $0.0001-0.0003.
+Open the `openai-agents-pet-adoption` project. In **Traces** there are five rows named `Shelter front desk`, one per turn, each with 11-12 spans. Open one: the tree is `Task` > `Front Desk Triage` (one `Turn` with an `llm` span `Response`) > `Handoff` > the specialist (for example `Adoption Specialist`) > its `Turn`s, with a `tool` span between them such as `find_animals` or `reserve`. Click a tool span to see the arguments the model chose (`{"animal_id":"A-101","adopter_name":"Maya Okafor"}`) and the JSON the tool returned. LLM spans show model `gpt-4o-mini-2024-07-18`, token counts and an estimated cost (about $0.00003-0.0001 per call); a whole turn costs roughly $0.0001-0.0003.
 
-Now the interesting part. In the `rehome-and-mixup` thread, turn one (rabbit surrender on Monday) shows a `book_surrender` tool span returning `{"error": "no surrender appointments on Monday", "available_days": [...]}`, and the agent correctly offers Tuesday. Turn two asks for Tuesday *and* to reserve Captain Whiskers for a sister. The triage agent hands it to `Surrender Intake` again, which has no adoption tools, and in our run it called `book_surrender` a second time with `owner_name: "Ana Reyes"` and told the visitor Captain Whiskers was reserved. Nothing was reserved, and Captain Whiskers is already adopted anyway. The reply reads fine; the span tree shows that two surrender bookings were made and `reserve` was never called.
+Now the interesting part. In the `rehome-and-mixup` thread, turn one (rabbit surrender on Monday) shows a `book_surrender` tool span returning `{"error": "no surrender appointments on Monday", "available_days": [...]}`, and the agent correctly offers Tuesday. Turn two asks for Tuesday *and* to reserve Captain Whiskers for a sister. The triage agent hands it to `Surrender Intake` again, which has no adoption tools, and in our latest run it called `book_surrender` twice in one turn: once for `owner_name: "Tomas Reyes"` and once for `owner_name: "Ana Reyes"`, both for a rabbit on Tuesday. The reply says the surrender of "Captain Whiskers" is confirmed and that Ana "has also been booked", with two confirmation codes. The reply reads fine; the span tree shows two surrender bookings and no `reserve` call. Captain Whiskers is already adopted anyway.
 
 The **Threads** tab lists three threads, `kid-friendly-dog-...` (2 turns), `foster-kittens-...` (1) and `rehome-and-mixup-...` (2). Open one to read the whole exchange in order.
 
-A smaller one: asked about fostering a kitten, the Foster Coordinator called `list_foster_slots` with `species: "cat"`, got the 2-week cat slot, and never saw the 8-week kitten slot. The tool span input is where you notice it. Model behaviour varies between runs, so your trace may fail in a different place.
+A smaller one: asked about fostering a kitten, the Foster Coordinator called `list_foster_slots` with `species: "cats"`. The tool matches by substring of the slot species (`"cats" in "cat"` is false), so it returned `{"error": "no foster slots for that species"}` and the agent told the visitor no kitten slots exist, although the shelter has a 2-week cat slot and an 8-week kitten slot. The tool span input is where you notice it. Model behaviour varies between runs (an earlier run sent `"cat"` and only saw the cat slot), so your trace may fail in a different place.
 
 ## Run it yourself
 
@@ -54,6 +54,6 @@ From this folder, with Opik running locally and `OPENAI_API_KEY` available (in `
 - `shelter.py` - fictional animals, foster slots and the tool logic.
 - `verify.py` - queries Opik and prints traces, span types, tool I/O, tokens, cost and threads.
 - `tests/test_shelter.py` - offline tests for the tools and for importing the traced agents with tracking disabled.
-- `pyproject.toml`, `.env.example`, `.gitignore` - setup (pins `opik==2.2.35`).
+- `pyproject.toml`, `.env.example`, `.gitignore` - setup (pins `opik==2.2.105`).
 
 *built with Opik · inspired by Opik's examples and documentation*
