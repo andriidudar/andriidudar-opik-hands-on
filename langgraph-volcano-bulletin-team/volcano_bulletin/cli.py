@@ -17,6 +17,7 @@ dotenv.load_dotenv(pathlib.Path(__file__).parents[2] / ".env")
 dotenv.load_dotenv()
 
 from .graph import build_graph  # noqa: E402
+from .report import cost_by_agent, fetch_spans, format_table  # noqa: E402
 
 DEFAULT_BRIEF = (
     "Draft this week's activity bulletin for Mount Tarrow (12-18 October): what the "
@@ -36,12 +37,15 @@ def run(brief: str) -> dict:
     result = app.invoke({"brief": brief}, config={"callbacks": [tracer]})
     # Traces are sent from a background thread; flush so a short CLI run doesn't exit first.
     opik.flush_tracker()
+    # created_traces() holds the one root trace this tracer opened for the invoke.
+    result["trace_id"] = tracer.created_traces()[0].id
     return result
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Draft the weekly volcano bulletin")
     parser.add_argument("brief", nargs="?", default=DEFAULT_BRIEF)
+    parser.add_argument("--no-report", action="store_true", help="skip the per-agent cost table")
     args = parser.parse_args()
     print(f"Editor's brief: {args.brief}\n")
     result = run(args.brief)
@@ -49,3 +53,8 @@ def main() -> None:
     for i, q in enumerate(result["questions"], 1):
         print(f"  {i}. {q}")
     print(f"\nResearcher findings: {len(result['findings'])}\n\n{result['bulletin']}")
+    if not args.no_report:
+        # Read the trace back from Opik: llm spans hold the tokens and cost, and we
+        # roll them up to the node that made the call.
+        spans = fetch_spans(PROJECT_NAME, result["trace_id"])
+        print(f"\nCost per agent (trace {result['trace_id']}):\n{format_table(cost_by_agent(spans))}")
