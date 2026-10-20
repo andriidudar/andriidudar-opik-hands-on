@@ -1,6 +1,7 @@
 // The whole Opik integration lives here: an OpenTelemetry SDK whose trace
 // exporter is OpikExporter, plus the AI SDK's own telemetry integration.
 import { NodeSDK } from "@opentelemetry/sdk-node";
+import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { registerTelemetry } from "ai";
 import { OpenTelemetry } from "@ai-sdk/otel";
 import { OpikExporter } from "opik-vercel";
@@ -17,8 +18,14 @@ const exporter = new OpikExporter({
   tags: ["sveltekit", "streaming"],
 });
 
-// NodeSDK batches finished spans and hands them to the exporter.
-const sdk = new NodeSDK({ serviceName: OPIK_PROJECT, traceExporter: exporter });
+// The default batch processor waits 5 s before exporting, so a short-lived
+// server (like the one npm run demo starts) was stopped with the last turns
+// still queued and they never reached Opik. A 500 ms delay still sends all
+// spans of one chat turn together, which keeps each turn to one trace update.
+const sdk = new NodeSDK({
+  serviceName: OPIK_PROJECT,
+  spanProcessors: [new BatchSpanProcessor(exporter, { scheduledDelayMillis: 500 })],
+});
 sdk.start();
 
 // AI SDK v7 emits spans through a registered telemetry integration, so this
@@ -40,10 +47,3 @@ registerTelemetry(
     },
   }),
 );
-
-// On shutdown, push the last batch of spans to Opik before the process exits.
-for (const signal of ["SIGTERM", "SIGINT"] as const) {
-  process.once(signal, () => {
-    sdk.shutdown().finally(() => process.exit(0));
-  });
-}

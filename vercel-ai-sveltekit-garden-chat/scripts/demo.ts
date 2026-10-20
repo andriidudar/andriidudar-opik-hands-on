@@ -119,8 +119,10 @@ try {
       turnCount += 1;
     }
   }
+  // The last spans of a turn end just after its stream closes; give the
+  // exporter a moment to send them before the server goes away.
+  await sleep(3_000);
 } finally {
-  // SIGTERM runs the telemetry shutdown hook, which flushes pending spans to Opik.
   try {
     process.kill(-server.pid!, "SIGTERM");
   } catch {

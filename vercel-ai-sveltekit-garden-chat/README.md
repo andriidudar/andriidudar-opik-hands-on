@@ -22,11 +22,11 @@ This example is "Sprout", a home-gardening assistant. It answers from a handful 
 
 Open the `vercel-ai-sveltekit-garden-chat` project after a demo run.
 
-**Traces.** The table holds 12 rows: 6 named `garden-chat-turn` (one per streamed reply) and 6 named `online_evaluation`, which are the judge's own runs. Open a `garden-chat-turn` trace and you see a `step 1` span with a `chat gpt-4o-mini` span of type `llm` inside it. The input is the full message array including the system prompt with the retrieved note, so you can tell which note the model saw. In my run the second turn of the monstera conversation used 292 prompt tokens and cost $0.0000792; every turn cost between $0.00005 and $0.0001. Replies left the server as a stream, but each trace still carries the complete text and token usage.
+**Traces.** The table holds 12 rows: 6 named `garden-chat-turn` (one per streamed reply) and 6 named `online_evaluation`, which are the judge's own runs. Open a `garden-chat-turn` trace and you see a `step 1` span with a `chat gpt-4o-mini` span of type `llm` inside it. The input is the full message array including the system prompt with the retrieved note, so you can tell which note the model saw. In my run the second turn of the monstera conversation used 292 prompt tokens and cost $0.0000744; every turn cost between $0.00005 and $0.0001. Replies left the server as a stream, but each trace still carries the complete text and token usage.
 
 **Threads.** The Threads tab shows 3 threads with 4 messages each (two turns, input plus output). They are the tomato, monstera and "roses, then sci-fi" conversations. The thread id is the `Chat` id the browser (or the demo script) sends.
 
-**Scores.** Each `garden-chat-turn` trace has an `answer_relevance` feedback score (0 or 1) with the judge's reasoning, such as "The answer directly addresses the user's question about how often to water the Monstera". In the final run all 6 scored 1. In an earlier run the judge gave the sci-fi turn a 0 ("does not address the user's question") and in the later one a 1, so this judge is lenient and slightly noisy on off-topic questions. That is useful to know before you alert on it. The rule is listed under the project's Online evaluation tab.
+**Scores.** Each `garden-chat-turn` trace has an `answer_relevance` feedback score (0 or 1) with the judge's reasoning, such as "The answer directly addresses the user's question about how often to water the Monstera". In the final run 5 of 6 scored 1 and the sci-fi turn scored 0 ("does not address the user's request for a sci-fi novel and instead redirects"). Across my runs that same turn scored 0 twice and 1 twice, so the judge is noisy on off-topic questions. That is useful to know before you alert on it. The rule is listed under the project's Online evaluation tab.
 
 ## Run it yourself
 
@@ -56,6 +56,12 @@ Other scripts: `npm run rule` creates the rule if missing, `npm run clean` delet
 ```
 
 **`npm install` fails with `peer @sveltejs/kit@"^2.0.0" from @sveltejs/adapter-auto`.** SvelteKit 3 is out, but `adapter-auto` 7 only accepts 2.x. Pin `"@sveltejs/kit": "^2.70.3"`.
+
+**The last turns of a demo run never show up in Opik.** A first version used `NodeSDK`'s default span batching, which waits 5 seconds before exporting. The demo stopped the server right after the final reply, so one of the three conversations had no traces. A 500 ms batch delay fixes it, and the demo also waits 3 seconds after the last stream closes:
+
+```ts
+new NodeSDK({ spanProcessors: [new BatchSpanProcessor(exporter, { scheduledDelayMillis: 500 })] })
+```
 
 **The trace count is double what you sent.** Every online-rule run is logged as a trace named `online_evaluation` in the same project. Filter on `name !== "online_evaluation"` when you count your own traces (`listTraces` in `scripts/opik-rest.ts` does).
 
