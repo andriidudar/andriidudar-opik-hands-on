@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ep-01",
+    "description": "Three decades after a lighthouse keeper vanished from Gull Rock, we reopen the case file, interview the retired detective, and ask who benefited from the cover-up.",
+    "genre": "true-crime"
+  },
+  {
+    "id": "ep-02",
+    "description": "A string of identical break-ins shook the town of Marrow Bend in 1998. This week: the fingerprint that didn't match anyone, and the neighbor who never stopped watching.",
+    "genre": "true-crime"
+  },
+  {
+    "id": "ep-03",
+    "description": "Episode 14 walks through the trial of a forger who sold fake maps to museums, with court transcripts read aloud by actors.",
+    "genre": "true-crime"
+  },
+  {
+    "id": "ep-04",
+    "description": "Two friends rank every sandwich they have ever regretted, call a deli to complain about a sandwich from 2011, and lose an argument with a pickle.",
+    "genre": "comedy"
+  },
+  {
+    "id": "ep-05",
+    "description": "Our guest tries to explain cryptocurrency using only farm animal metaphors. The goat gets very confused. So do we.",
+    "genre": "comedy"
+  },
+  {
+    "id": "ep-06",
+    "description": "Improv night recap: a mock courtroom where the defendant is accused of stealing the last slice of office birthday cake.",
+    "genre": "comedy"
+  },
+  {
+    "id": "ep-07",
+    "description": "How do tardigrades survive the vacuum of space? A cell biologist explains the protein shield that lets them dry out and come back to life.",
+    "genre": "science"
+  },
+  {
+    "id": "ep-08",
+    "description": "We visit a deep-sea research ship to learn how hydrothermal vents might hint at the chemistry that started life on Earth.",
+    "genre": "science"
+  },
+  {
+    "id": "ep-09",
+    "description": "Why does the Moon drift away from us by a few centimeters every year? An astrophysicist walks through tides, angular momentum, and lasers bounced off mirrors.",
+    "genre": "science"
+  },
+  {
+    "id": "ep-10",
+    "description": "In 1347 a fleet of grain ships docked at Messina carrying more than cargo. We trace how the plague moved along trade routes and reshaped medieval Europe.",
+    "genre": "history"
+  },
+  {
+    "id": "ep-11",
+    "description": "The forgotten story of the 1893 railway strike in a small mining valley, told through letters, union ledgers, and a grandson's memories.",
+    "genre": "history"
+  },
+  {
+    "id": "ep-12",
+    "description": "How a 17th century cartographer in Amsterdam drew the first reliable chart of the Baltic, and why three empires wanted it.",
+    "genre": "history"
+  },
+  {
+    "id": "ep-13",
+    "description": "A founder breaks down why her subscription meal-kit startup nearly ran out of cash in month nine, and the pricing change that saved it.",
+    "genre": "business"
+  },
+  {
+    "id": "ep-14",
+    "description": "We analyze how a regional bank decided to merge with a rival, what the board argued about, and what the numbers said afterward.",
+    "genre": "business"
+  },
+  {
+    "id": "ep-15",
+    "description": "Hiring your first ten employees: an operator shares the interview scorecard, equity splits, and the two hires she would undo.",
+    "genre": "business"
+  },
+  {
+    "id": "ep-16",
+    "description": "A sleep therapist offers a ten-minute wind-down routine, gentle stretches, and a breathing exercise for anxious evenings.",
+    "genre": "wellness"
+  },
+  {
+    "id": "ep-17",
+    "description": "Why walking meetings and a slower morning might protect your attention. Plus a guided body scan to end the episode.",
+    "genre": "wellness"
+  },
+  {
+    "id": "ep-18",
+    "description": "A nutritionist and a yoga teacher compare notes on building habits that survive a busy season without guilt.",
+    "genre": "wellness"
+  },
+  {
+    "id": "ep-19",
+    "description": "Post-match breakdown of last night's cup final: the offside call, the substitution that changed the game, and a 90th-minute header.",
+    "genre": "sports"
+  },
+  {
+    "id": "ep-20",
+    "description": "The underdog marathon runner who trained on a treadmill in her garage and qualified for the national championships.",
+    "genre": "sports"
+  },
+  {
+    "id": "ep-21",
+    "description": "Fantasy league draft strategy: which rookies to target, which veterans to avoid, and how to survive the bye weeks.",
+    "genre": "sports"
+  },
+  {
+    "id": "ep-22",
+    "description": "Chapter three of our audio drama: the lighthouse radio crackles, and Mira hears her own voice warning her to leave the island.",
+    "genre": "fiction"
+  },
+  {
+    "id": "ep-23",
+    "description": "A serialized fantasy tale of a baker who discovers her sourdough starter is slowly becoming sentient, read by a full cast.",
+    "genre": "fiction"
+  },
+  {
+    "id": "ep-24",
+    "description": "A short story about two robots maintaining a space station long after the last human has left, narrated in six parts.",
+    "genre": "fiction"
+  },
+  {
+    "id": "ep-25",
+    "description": "A comedian hosts a lighthearted look at the real 1911 theft of the Mona Lisa, with jokes, but the focus is the investigation and the arrest.",
+    "genre": "true-crime"
+  },
+  {
+    "id": "ep-26",
+    "description": "The financial collapse of a sports franchise: how a famous club's ownership debt, sponsorship deals, and ticket pricing ended in bankruptcy.",
+    "genre": "business"
+  },
+  {
+    "id": "ep-27",
+    "description": "A sleep-friendly bedtime retelling of the building of the Great Pyramid, calm voices and soft music, built on archaeological evidence.",
+    "genre": "history"
+  },
+  {
+    "id": "ep-28",
+    "description": "The physics of a curveball: a biomechanics researcher and a retired pitcher explain spin, seams, and air pressure.",
+    "genre": "science"
+  },
+  {
+    "id": "ep-29",
+    "description": "An audio play set at a real-life 1920s trial, with invented characters and a made-up verdict, performed by actors.",
+    "genre": "fiction"
+  },
+  {
+    "id": "ep-30",
+    "description": "A runner-turned-therapist discusses burnout, rest days, and mental health in elite athletes, with a guided breathing break.",
+    "genre": "wellness"
+  }
+]
