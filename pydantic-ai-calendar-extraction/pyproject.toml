@@ -5,6 +5,9 @@ description = "Pydantic AI agent that turns messy emails into typed calendar eve
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "logfire>=5.2.0",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.1",
+    "opik>=2.2.105",
     "pydantic-ai-slim[openai]>=1.0",
     "python-dotenv>=1.0",
 ]

@@ -2,14 +2,17 @@ import argparse
 
 from .agent import MODEL, extract_event
 from .emails import load_emails, render_email
+from .tracing import flush_tracing, setup_tracing
 
 
 def cmd_extract(args: argparse.Namespace) -> None:
+    setup_tracing()
     emails = [e for e in load_emails() if args.email in (None, e["id"])]
     print(f"Extracting {len(emails)} emails with {MODEL}\n")
     for email in emails:
         event = extract_event(render_email(email))
         print(f"[{email['id']}]\n{event.model_dump_json(indent=2)}\n")
+    flush_tracing()
 
 
 def main() -> None:

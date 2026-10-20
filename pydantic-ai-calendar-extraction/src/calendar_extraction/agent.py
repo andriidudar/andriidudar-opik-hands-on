@@ -19,7 +19,14 @@ SYSTEM_PROMPT = (
 )
 
 # defer_model_check lets the module import (and tests stub the model) without a key.
-agent = Agent(MODEL, output_type=CalendarEvent, system_prompt=SYSTEM_PROMPT, defer_model_check=True)
+# The agent name becomes the span name in Opik ("invoke_agent calendar_extractor").
+agent = Agent(
+    MODEL,
+    output_type=CalendarEvent,
+    system_prompt=SYSTEM_PROMPT,
+    defer_model_check=True,
+    name="calendar_extractor",
+)
 
 
 def extract_event(email_text: str) -> CalendarEvent:
