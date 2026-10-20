@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luz, your Spanish tutor</title>
+<style>
+ body{font:16px system-ui;max-width:440px;margin:2rem auto;padding:0 1rem}
+ #log{border:1px solid #ccc;border-radius:8px;height:360px;overflow:auto;padding:.5rem}
+ .you{text-align:right;color:#1d4ed8}.luz{color:#166534}p{margin:.4rem 0}
+ form{display:flex;gap:.5rem;margin-top:.5rem}input{flex:1;padding:.5rem}
+</style>
+<h3>Luz · Spanish practice</h3>
+<div id="log"><p class="luz">¡Hola! Ask me anything about Spanish.</p></div>
+<form id="f"><input id="m" placeholder="Escribe aquí…" autocomplete="off"><button>Send</button></form>
+<script>
+const sid = crypto.randomUUID(), log = document.getElementById("log");
+const add = (cls, t) => { const p = document.createElement("p"); p.className = cls; p.textContent = t; log.append(p); log.scrollTop = 1e9; };
+document.getElementById("f").onsubmit = async e => {
+  e.preventDefault();
+  const m = document.getElementById("m"), text = m.value.trim(); if (!text) return;
+  m.value = ""; add("you", text);
+  const r = await fetch("/chat", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: text, session_id: sid})});
+  add("luz", r.ok ? (await r.json()).reply : "Something went wrong, try again.");
+};
+</script>
