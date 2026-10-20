@@ -1,0 +1,3 @@
+Ticket 8841 from Tobias Okonkwo-Reyes: "My card ending 4111 1111 1111 1111 was charged twice
+for the Northwind Kettle order. Reply to tobias.okonkwo@example.test or call 555-0177."
+Agent note: refund approved, order ships from the Kettleford warehouse.

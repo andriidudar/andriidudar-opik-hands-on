@@ -1,0 +1,17 @@
+[project]
+name = "python-sdk-manual-redaction"
+version = "0.1.0"
+description = "PII redaction pipeline traced by hand with the low-level Opik client"
+requires-python = ">=3.12"
+dependencies = [
+    "opik==2.2.105",
+    "openai>=1.60",
+    "python-dotenv>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
