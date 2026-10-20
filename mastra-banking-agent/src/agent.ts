@@ -14,5 +14,7 @@ export const bankingAgent = new Agent({
     "Only call freeze_card when the customer clearly asks for it or reports fraud. " +
     "Be concise: 2-4 sentences, no bullet lists.",
   model: MODEL,
-  tools: { getBalanceTool, listTransactionsTool, freezeCardTool },
+  // The object key, not the tool id, becomes the execute_tool span name in Opik,
+  // so use the snake_case ids the model sees.
+  tools: { get_balance: getBalanceTool, list_transactions: listTransactionsTool, freeze_card: freezeCardTool },
 });

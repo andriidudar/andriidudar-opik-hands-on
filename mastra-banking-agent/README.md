@@ -22,11 +22,11 @@ A demo script sends three customer messages: a two-account balance question, a t
 
 Open http://localhost:5173, workspace `default`, project **mastra-banking-agent**.
 
-- The Traces tab holds 3 traces named `invoke_agent fernbank-assistant`. Each one has two `llm` spans named `chat gpt-4o-mini` (the model's tool-calling step and its final answer) and one or two `tool` spans named `execute_tool ...`.
+- The Traces tab holds 3 traces named `invoke_agent fernbank-assistant`. Each one has two `llm` spans named `chat gpt-4o-mini` (the model's tool-calling step and its final answer) and one or two `tool` spans named `execute_tool get_balance`, `execute_tool list_transactions` or `execute_tool freeze_card`.
 - Open the fraud trace and click its tool span. The input shows `gen_ai.tool.call.arguments` (`card_id: CARD-5523`, and the reason the model wrote), and the output shows `gen_ai.tool.call.result` with `status: frozen`.
-- Click an `llm` span. Model is `gpt-4o-mini-2024-07-18`, provider `openai`, with prompt and completion tokens (for example 479 + 57 on the first step of the freeze request) and an estimated cost of about $0.0001. The trace row rolls these up: 957 tokens and $0.00018 for the freeze request.
+- Click an `llm` span. Model is `gpt-4o-mini-2024-07-18`, provider `openai`, with prompt and completion tokens (the freeze request's two steps used 419 and 538 tokens) and an estimated cost of about $0.0001 each. The trace row rolls these up: 957 tokens and $0.00019 for the freeze request.
 - The Spans tab filtered by type `tool` is a quick audit of every action the agent took, with its arguments.
-- Mastra also exports its internal bookkeeping (`agent_step`, `model_chunk`, `processor_run`, ...) as `general` spans, so a trace has 14 to 17 spans, most of them noise.
+- Each trace has 7 or 8 spans: the root `invoke_agent`, the `agent_step` and `model_generation` wrappers (type `general`), the two `llm` spans and the `tool` spans.
 
 The trace's own Output column is empty (see Gotchas).
 
@@ -49,9 +49,17 @@ Needs Node 22.13+, a local Opik on `http://localhost:5173`, and an `OPENAI_API_K
 
 ## Gotchas we hit
 
-**The trace Output column is empty.** The OTLP mapping fills the root span's input with the raw Mastra attributes (the question sits under `mastra.agent_run.input`) and never sets a trace output. The final answer is still in the last `llm` span's output. There is no mapper hook in the exporter, so read the answer from there.
+**The trace Output column is empty.** The OTLP mapping fills the root span's input with the raw Mastra attributes (the question sits under `mastra.agent_run.input`) and never sets a trace output. The final answer is still in the last `llm` span's output. The exporter has no mapper hook, so read the answer from there.
 
-**Traces land in "Default Project".** Opik's OTLP endpoint picks the project from a `projectName` header, not from the OTel `serviceName`. `src/mastra.ts` sets `headers: { projectName: "mastra-banking-agent", "Comet-Workspace": "default" }` on the exporter. Against a local Opik, do not send an `Authorization` header.
+**Fourteen to seventeen spans per trace, most of them empty `general` spans.** Mastra exports `model_chunk` and `processor_run` spans for every streamed chunk and input processor, so the first run produced 14 to 17 spans per trace and buried the two `llm` spans. Drop them before export in `src/mastra.ts`:
+
+```ts
+import { SpanType } from "@mastra/core/observability";
+// inside configs.default:
+excludeSpanTypes: [SpanType.MODEL_CHUNK, SpanType.PROCESSOR_RUN],
+```
+
+**Tool spans are named `execute_tool getBalanceTool`.** The span name comes from the key in the agent's `tools` object, not from the tool's `id`. With `tools: { getBalanceTool, ... }` the Opik names are camelCase and don't match what the model was told. Use the ids as keys: `tools: { get_balance: getBalanceTool, list_transactions: listTransactionsTool, freeze_card: freezeCardTool }`.
 
 ## How it's put together
 

@@ -3,6 +3,7 @@
 // endpoint, where it becomes one trace per agent.generate() call.
 import { Mastra } from "@mastra/core/mastra";
 import { Observability } from "@mastra/observability";
+import { SpanType } from "@mastra/core/observability";
 import { OtelExporter } from "@mastra/otel-exporter";
 import { bankingAgent } from "./agent.ts";
 
@@ -36,6 +37,10 @@ export const mastra = new Mastra({
       configs: {
         default: {
           serviceName: OPIK_PROJECT,
+          // Drop Mastra's streaming-chunk and processor bookkeeping before export:
+          // they arrive in Opik as ~10 empty "general" spans per trace and bury the
+          // llm and tool spans.
+          excludeSpanTypes: [SpanType.MODEL_CHUNK, SpanType.PROCESSOR_RUN],
           exporters: [
             new OtelExporter({
               provider: {
