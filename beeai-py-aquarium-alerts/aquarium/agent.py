@@ -6,7 +6,7 @@ from beeai_framework.agents.react import ReActAgent
 from beeai_framework.backend import ChatModel
 from beeai_framework.memory import UnconstrainedMemory
 
-from aquarium.tools import lookup_species_tolerance, page_aquarist, read_tank_log
+from aquarium.tools import PAGES_SENT, lookup_species_tolerance, page_aquarist, read_tank_log
 
 SEVERITIES = ("info", "warning", "critical")
 
@@ -39,6 +39,12 @@ def parse_verdict(answer: str) -> dict:
 
 
 async def triage(agent: ReActAgent, alert: dict) -> dict:
+    pages_before = len(PAGES_SENT)
     prompt = f"Alert {alert['id']}: {alert['text']}"
     result = await agent.run(prompt, execution={"max_iterations": 8, "max_retries_per_step": 2, "total_max_retries": 3})
-    return {"alert": alert["id"], **parse_verdict(result.last_message.text)}
+    return {
+        "alert": alert["id"],
+        "expected": alert["expected_severity"],
+        "paged": len(PAGES_SENT) > pages_before,
+        **parse_verdict(result.last_message.text),
+    }
