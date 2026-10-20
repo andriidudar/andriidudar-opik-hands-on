@@ -1,0 +1,29 @@
+{
+  "name": "langgraphjs-boardgame-rules-rag",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.2.18",
+    "@langchain/langgraph": "^1.5.1",
+    "@langchain/openai": "^1.6.2",
+    "dotenv": "^17.2.3",
+    "opik": "2.2.105",
+    "opik-langchain": "2.2.105",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  },
+  "overrides": {
+    "opik-langchain": { "opik": "2.2.105" }
+  }
+}
